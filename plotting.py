@@ -1,7 +1,8 @@
 import pandas as pd
-import matplotlib.dates as mdates
 from mplfinance.original_flavor import candlestick_ohlc
+import matplotlib.dates as mdates
 import matplotlib.ticker as ticker
+import matplotlib.pyplot as plt
 
 def plot_candlestick(historical_data: pd.DataFrame, period: int|None = None):
   if period is None:
