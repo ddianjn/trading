@@ -110,10 +110,9 @@ class ModelTrainer():
         total_test_loss += loss.item()
 
         batch_prediction = np.array(batch_prediction.tolist())
-        # batch_prediction = scaler.inverse_transform(batch_prediction)
         predictions.extend(batch_prediction)  # Append predicted prices
       test_loss = total_test_loss / len(test_loader)
-    return test_loss, predictions
+    return test_loss, np.array(predictions)
   
   def _create_data_loader(self,
                           x,
