@@ -55,8 +55,9 @@ class ModelTrainer():
         break
 
     if self.scheduler is not None:
-        self.scheduler.step()
-        # print(f"last_lr: {self.scheduler.get_last_lr()}")
+      if print_train_steps:
+        print(f"last_lr: {self.scheduler.get_last_lr()}")
+      self.scheduler.step()
 
     return train_loss, test_loss
 
