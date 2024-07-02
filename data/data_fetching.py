@@ -10,6 +10,7 @@ def download_data(stock_ticker: str,
     end = date.today().strftime("%Y-%m-%d")
   # Load the data from Yahoo Finance
   historical_data = yf.download(stock_ticker, start=start, end=end, interval=interval)
+  print()
   # historical_data.reset_index(inplace=True)
 
   # Parse dates and convert them to matplotlib's date format
