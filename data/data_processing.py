@@ -4,8 +4,9 @@ import matplotlib.pyplot as plt
 import yfinance as yf
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 import datetime
+from typing import List
 
-def split_data(data: np.ndarray,
+def split_data(data: pd.DataFrame,
                validate_size: int = 0,
                test_size: int = 30,
                plot_split_chart:bool = False):
@@ -24,7 +25,10 @@ def split_data(data: np.ndarray,
   return train_data, validate_data, test_data
 
 
-def normalize_data(train_data, validate_data, test_data, scaler_creater = StandardScaler):
+def normalize_data(train_data: pd.DataFrame,
+                   validate_data: pd.DataFrame,
+                   test_data: pd.DataFrame,
+                   scaler_creater = StandardScaler):
   scalers = {}
 
   # train_data.reset_index(inplace=True)
@@ -66,14 +70,14 @@ def normalize_data(train_data, validate_data, test_data, scaler_creater = Standa
   scaled_test_data = pd.DataFrame(scaled_test_data, columns=test_data.columns)
   return scaled_train_data, scaled_validate_data, scaled_test_data
 
-def create_time_series_data(data,
+def create_time_series_data(data: pd.DataFrame,
                             scaled_data = None,
-                            features = ["Close", "High", "Low", "Volume"],
-                            output_features = ['Close'],
-                            look_back = 5,
-                            look_forward = 5,
-                            fill_forward = False,
-                            verbose = False):
+                            features: List[str] = ["Close", "High", "Low", "Volume"],
+                            output_features: List[str] = ['Close'],
+                            look_back: int = 5,
+                            look_forward: int = 5,
+                            fill_forward: bool = False,
+                            verbose: bool = False):
   if scaled_data is None:
     scaled_data = data
 
