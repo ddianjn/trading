@@ -3,7 +3,7 @@ from torch import nn
 from torch.optim.lr_scheduler import LRScheduler
 import matplotlib.pyplot as plt
 from trading.ml import ml_data
-from trading.ml.train_eval import trainer
+from trading.ml.pytorch.train_eval import trainer
 from typing import List
 
 def train_and_eval(model_trainer: trainer.ModelTrainer,
