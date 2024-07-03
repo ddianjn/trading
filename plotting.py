@@ -38,3 +38,21 @@ def plot_candlestick(historical_data: pd.DataFrame, period: int|None = None):
   # Show the plot
   plt.tight_layout()
   plt.show()
+
+def plot_sequence_prediction_comparison(actual: pd.DataFrame,
+                                        predicted: np.ndarray,
+                                        prediction_indices,
+                                        secondary_predicted: np.ndarray|None = None):
+  # Plot actual vs predicted closing prices
+  fig = plt.figure(figsize=(12, 10))
+  look_forward = predicted.shape[1]
+  for i in range(look_forward):
+    ax = fig.add_subplot(look_forward, 1, i+1)
+    ax.plot(actual.index, actual, label="Actual")
+    ax.plot(prediction_indices[i:-look_forward+i], predicted[:, i], label=f"Predicted day {i+1}", linestyle='dashed')
+    if secondary_predicted is not None:
+      ax.plot(prediction_indices[i:-look_forward+i], secondary_predicted[:, i], linestyle='dotted', label=f"Secondary Predicted day {i+1} (2)")
+    # ax.plot(train_data.index, train_data["Close"], label="Train")
+    ax.legend()
+    ax.grid(True)
+  plt.show()
