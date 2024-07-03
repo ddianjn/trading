@@ -54,10 +54,11 @@ class ModelTrainer():
         print(f'Epoch [{epoch+1}/{epochs}] - Training Loss: {train_loss:.4f}, Test Loss: {test_loss:.4f}')
         break
 
-    if self.scheduler is not None:
-      if print_train_steps:
-        print(f"last_lr: {self.scheduler.get_last_lr()}")
-      self.scheduler.step()
+      # Update learning rate
+      if self.scheduler is not None:
+        if print_train_steps:
+          print(f"last_lr: {self.scheduler.get_last_lr()}")
+        self.scheduler.step()
 
     return train_loss, test_loss
 
