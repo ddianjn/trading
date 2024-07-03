@@ -32,7 +32,7 @@ class TrainingData:
     self.test_indices = test_indices
 
 
-def prepare_data(stock_ticker:str,
+def prepare_sequence_data(stock_ticker:str,
                  start:str = "2018-01-01",
                  end:str = None,
                  interval:str = "1d",
