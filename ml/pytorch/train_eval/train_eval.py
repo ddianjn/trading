@@ -24,7 +24,7 @@ def train_and_eval(model_trainer: trainer.ModelTrainer,
                    print_train_steps: bool = True):
   if print_train_steps:
     print(model_trainer.model)
-  data = ml_data.prepare_data(
+  data = ml_data.prepare_sequence_data(
     stock_ticker,
     start = start,
     end = end,
