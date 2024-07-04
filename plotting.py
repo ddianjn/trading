@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from mplfinance.original_flavor import candlestick_ohlc
 import matplotlib.dates as mdates
