@@ -12,14 +12,14 @@ class ModelTrainer:
                epochs = 100,
                early_stop_patience = 30,
                verbose = False,
-               print_train_steps = True) -> (float64, float64):
+               print_train_steps = True) -> (float, float):
     """Train and evaluate the model.
 
     Returns:
       Train loss and validation loss.
     """
 
-  def eval(self, x, y, shuffle: bool = False) -> (float64, np.ndarray):
+  def eval(self, x, y, shuffle: bool = False) -> (float, np.ndarray):
     """Evaluate the model.
 
     Returns:
