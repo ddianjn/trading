@@ -38,7 +38,8 @@ class PytorchTrainer(ModelTrainer):
       train_loss = self._fit_one_epoch(train_x,
                                        train_y,
                                        epoch = epoch,
-                                       verbose = verbose)
+                                       verbose = verbose,
+                                       print_train_steps = print_train_steps)
       # Evaluate on test set (calculate MSE)
       test_loss, predictions = self.eval(test_x, test_y)
 
@@ -65,7 +66,8 @@ class PytorchTrainer(ModelTrainer):
           y,
           epoch: int,
           shuffle: bool = True,
-          verbose = False) -> float:
+          verbose = False,
+          print_train_steps = True) -> float:
     train_loader = self._create_data_loader(x,
                                             y,
                                             batch_size = self.batch_size,
