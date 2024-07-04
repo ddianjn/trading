@@ -19,7 +19,7 @@ class TensorflowTrainer(ModelTrainer):
                epochs = 100,
                early_stop_patience = 30,
                verbose = False,
-               print_train_steps = True):
+               print_train_steps = True) -> (float, float):
     early_stopping = EarlyStopping(monitor='val_loss',
                                    patience=early_stop_patience,
                                    mode='min',
@@ -35,7 +35,7 @@ class TensorflowTrainer(ModelTrainer):
     val_loss = history.history['val_loss']
     return train_loss, val_loss
 
-  def eval(self, x, y, shuffle: bool = False) -> (float64, np.ndarray):
+  def eval(self, x, y, shuffle: bool = False) -> (float, np.ndarray):
     loss = self.model.evaluate(test_x, test_y)
     predictions = self.model.predict(test_x)
     return loss, predictions
