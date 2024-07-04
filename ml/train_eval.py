@@ -1,11 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from trading.ml import ml_data
-from trading.ml.pytorch.train_eval import trainer
+from trading.ml.trainer import ModelTrainer
 from trading import plotting
 from typing import List
 
-def train_and_eval_sequence(model_trainer: trainer.ModelTrainer,
+def train_and_eval_sequence(model_trainer: ModelTrainer,
                             stock_ticker: str,
                             start: str = "2018-01-01",
                             end: str|None = None,
@@ -46,7 +46,7 @@ def train_and_eval_sequence(model_trainer: trainer.ModelTrainer,
       print_train_steps=print_train_steps)
   return data, train_loss, validate_loss
 
-def eval_sequence(model_trainier: trainer.ModelTrainer,
+def eval_sequence(model_trainier: ModelTrainer,
                   stock_ticker: str,
                   start: str = "2018-01-01",
                   end: str|None = None,
