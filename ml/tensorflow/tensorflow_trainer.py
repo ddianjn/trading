@@ -36,7 +36,7 @@ class TensorflowTrainer(ModelTrainer):
     return train_loss, val_loss
 
   def eval(self, x, y, shuffle: bool = False) -> (float, np.ndarray):
-    loss = self.model.evaluate(test_x, test_y)
-    predictions = self.model.predict(test_x)
+    loss = self.model.evaluate(x, y)
+    predictions = self.model.predict(x)
     return loss, predictions
     
