@@ -1,6 +1,4 @@
 import numpy as np
-from torch import nn
-from torch.optim.lr_scheduler import LRScheduler
 import matplotlib.pyplot as plt
 from trading.ml import ml_data
 from trading.ml.pytorch.train_eval import trainer
@@ -9,7 +7,6 @@ from typing import List
 
 def train_and_eval_sequence(model_trainer: trainer.ModelTrainer,
                             stock_ticker: str,
-                            scheduler: LRScheduler|None = None,
                             start: str = "2018-01-01",
                             end: str|None = None,
                             interval: str = "1d",
