@@ -27,7 +27,7 @@ class PytorchTrainer(ModelTrainer):
                epochs = 100,
                early_stop_patience = 30,
                verbose = False,
-               print_train_steps = True):
+               print_train_steps = True) -> (float, float):
     min_train_loss = float('inf')
     min_train_loss_epoch = 0
     min_test_loss = float('inf')
@@ -97,7 +97,7 @@ class PytorchTrainer(ModelTrainer):
       self.scheduler.step()
     return train_loss
 
-  def eval(self, x, y, shuffle: bool = False) -> (float64, np.ndarray):
+  def eval(self, x, y, shuffle: bool = False) -> (float, np.ndarray):
     # state_dict = model.state_dict()
     # print(f"Test LSTM weight: {state_dict['lstm.weight_ih_l0']}")
 
