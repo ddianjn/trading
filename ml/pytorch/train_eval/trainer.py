@@ -56,7 +56,7 @@ class ModelTrainer():
 
       # Update learning rate
       if self.scheduler is not None:
-        if print_train_steps:
+        if print_train_steps and (epoch+1)%5==0:
           print(f"last_lr: {self.scheduler.get_last_lr()}")
         self.scheduler.step()
 
