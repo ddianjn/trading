@@ -4,8 +4,9 @@ from torch import nn
 from torch.optim.optimizer import Optimizer
 from torch.optim.lr_scheduler import LRScheduler
 from torch.utils.data import TensorDataset, DataLoader
+from trading.ml import trainer
 
-class ModelTrainer():
+class PytorchTrainer(trainer.ModelTrainer):
   def __init__(self,
                model: nn.Module,
                optimizer: Optimizer,
