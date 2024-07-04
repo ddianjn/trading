@@ -65,7 +65,7 @@ class PytorchTrainer(ModelTrainer):
           y,
           epoch: int,
           shuffle: bool = True,
-          verbose = False) -> float64:
+          verbose = False) -> float:
     train_loader = self._create_data_loader(x,
                                             y,
                                             batch_size = self.batch_size,
