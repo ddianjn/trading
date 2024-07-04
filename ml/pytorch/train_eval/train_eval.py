@@ -4,6 +4,7 @@ from torch.optim.lr_scheduler import LRScheduler
 import matplotlib.pyplot as plt
 from trading.ml import ml_data
 from trading.ml.pytorch.train_eval import trainer
+from trading import plotting
 from typing import List
 
 def train_and_eval_sequence(model_trainer: trainer.ModelTrainer,
@@ -81,7 +82,7 @@ def eval_sequence(model_trainier: trainer.ModelTrainer,
     print(f'Test Loss: {test_loss:.4f}')
   # print(f"test_indices: {data.test_indices}\n\n")
   if plot_result:
-    plot_comparison(data.test_data[output_features],
-                    predictions,
-                    data.test_indices[look_back:])
+    plooting.plot_sequence_prediction_comparison(data.test_data[output_features],
+                                                 predictions,
+                                                 data.test_indices[look_back:])
   return data, test_loss, predictions
