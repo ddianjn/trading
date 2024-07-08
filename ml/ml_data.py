@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import datetime
 from trading.data import data_processing, data_fetching
 from trading import plotting
 from typing import List
