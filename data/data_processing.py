@@ -60,8 +60,10 @@ def normalize_data(train_data: pd.DataFrame,
     # print(f"feature_data\n{feature_data[-3:]}")
     # print(f"scaled_feature_data\n{scaled_feature_data[-3:]}")
     scaled_train_data = np.concatenate((scaled_train_data, scaled_train_feature_data), axis=1)
-    scaled_validate_data = np.concatenate((scaled_validate_data, scaled_validate_feature_data), axis=1)
-    scaled_test_data = np.concatenate((scaled_test_data, scaled_test_feature_data), axis=1)
+    if len(scaled_validate_data) > 0:
+      scaled_validate_data = np.concatenate((scaled_validate_data, scaled_validate_feature_data), axis=1)
+    if len(scaled_test_data) > 0:
+      scaled_test_data = np.concatenate((scaled_test_data, scaled_test_feature_data), axis=1)
     # print(f"scaled_train_data\n{scaled_train_data[:3]}")
     # print(f"scaled_train_data\n{scaled_train_data[-3:]}")
     # scaled_train_data[feature] = np.array(scaled_feature_data.flatten())
