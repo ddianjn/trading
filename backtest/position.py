@@ -3,8 +3,8 @@ from colorama import Fore, Style
 class Position:
   def __init__(self,
                stock: str, date,
-               price: float64,
-               shares: float32):
+               price: float,
+               shares: float):
     self.stock = stock
     self.open_date = date
     self.open_price = price
@@ -13,7 +13,7 @@ class Position:
     self.close_price = None
     self.profit = None
 
-  def close(self, date, price: float64):
+  def close(self, date, price: float):
     self.close_date = date
     self.close_price = price
     self.profit = (self.close_price - self.open_price) * self.shares
