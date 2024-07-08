@@ -5,10 +5,10 @@ class Trade:
   def __init__(self,
                stock: str,
                date,
-               price: float64,
-               shares: float32,
+               price: float,
+               shares: float,
                trade_type: str = "Long",
-               unit_cost: float64 = 0):
+               unit_cost: float = 0):
     self.stock = stock
     self.date = date
     self.price = price
