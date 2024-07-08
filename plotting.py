@@ -47,7 +47,7 @@ def plot_sequence_prediction_comparison(actual: pd.DataFrame,
   # Plot actual vs predicted closing prices
   fig = plt.figure(figsize=(12, 10))
   if predicted.ndim == 1:
-    look_forward = predicted.shape
+    look_forward = predicted.shape[0]
   else:
     look_forward = predicted.shape[1]
   for i in range(look_forward):
