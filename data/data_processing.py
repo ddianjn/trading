@@ -74,7 +74,7 @@ def normalize_data(train_data: pd.DataFrame,
   scaled_test_data = np.array(scaled_test_data)
 
   scaled_train_data = pd.DataFrame(scaled_train_data, columns=train_data.columns)
-  scaled_validate_data = pd.DataFrame(scaled_validate_data, columns=validate_data.columns)
+  scaled_validate_data = pd.DataFrame(scaled_validate_data, columns=train_data.columns)
   scaled_test_data = pd.DataFrame(scaled_test_data, columns=test_data.columns)
   return scaled_train_data, scaled_validate_data, scaled_test_data
 
