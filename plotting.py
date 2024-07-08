@@ -46,7 +46,10 @@ def plot_sequence_prediction_comparison(actual: pd.DataFrame,
                                         secondary_predicted: np.ndarray|None = None):
   # Plot actual vs predicted closing prices
   fig = plt.figure(figsize=(12, 10))
-  look_forward = predicted.shape[1]
+  if predicted.ndim == 1:
+    look_forward = predicted.shape
+  else:
+    look_forward = predicted.shape[1]
   for i in range(look_forward):
     ax = fig.add_subplot(look_forward, 1, i+1)
     ax.plot(actual.index, actual, label="Actual")
