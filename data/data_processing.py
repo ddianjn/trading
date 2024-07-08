@@ -49,8 +49,14 @@ def normalize_data(train_data: pd.DataFrame,
     # scalers[feature] = MinMaxScaler(feature_range=(0,1))
     scalers[feature] = scaler_creater()
     scaled_train_feature_data = scalers[feature].fit_transform(train_feature_data)
-    scaled_validate_feature_data = scalers[feature].transform(validate_feature_data)
-    scaled_test_feature_data = scalers[feature].transform(test_feature_data)
+    if len(validate_feature_data) > 0:
+      scaled_validate_feature_data = scalers[feature].transform(validate_feature_data)
+    else:
+      scaled_validate_feature_data = validate_feature_data
+    if len(test_feature_data) > 0:
+      scaled_test_feature_data = scalers[feature].transform(test_feature_data)
+    else:
+      scaled_test_feature_data = test_feature_data
     # print(f"feature_data\n{feature_data[-3:]}")
     # print(f"scaled_feature_data\n{scaled_feature_data[-3:]}")
     scaled_train_data = np.concatenate((scaled_train_data, scaled_train_feature_data), axis=1)
