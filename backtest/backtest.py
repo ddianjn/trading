@@ -1,11 +1,13 @@
+import pandas as pd
+from typing import List
 from trading.backtest.position import Position
 from trading.backtest.trade import Trade
 
-def backtest(stock,
-             data,
-             strategies,
-             initial_capital = 100000,
-             print_trades = False):
+def backtest(stock: str,
+             data: pd.DataFrame,
+             strategies: List,
+             initial_capital: float = 100000,
+             print_trades: bool = False):
   data = data.copy()
   data.reset_index(inplace=True)
   cash = initial_capital
@@ -39,9 +41,14 @@ def backtest(stock,
     cash += position.shares * end_price
     if print_trades:
       trade.print()
-  print_summary(data, initial_capital, cash, transactions, closed_positions)
+  print_summary(stock, data, initial_capital, cash, transactions, closed_positions)
 
-def print_summary(data, initial_capital, final_capital, transactions, closed_positions):
+def print_summary(stock: str,
+                  data: pd.DataFrame,
+                  initial_capital: float,
+                  final_capital: float,
+                  transactions: List[Trade],
+                  closed_positions: List[Position]):
   print(f"==={stock} Final Result===")
   total_return = final_capital - initial_capital
   percent_return = total_return / initial_capital
@@ -58,7 +65,7 @@ def print_summary(data, initial_capital, final_capital, transactions, closed_pos
   print_profit_factor(closed_positions)
   print_max_drawdown(initial_capital, transactions)
 
-def print_profit_trades(transactions):
+def print_profit_trades(transactions: List[Trade]):
   trade_with_profit = 0
   trade_with_loss = 0
   # Print profit trades
@@ -72,7 +79,7 @@ def print_profit_trades(transactions):
   print(f"Trade with loss: {trade_with_loss: .2f}")
   print(f"Profit Rate: {trade_with_profit / (trade_with_profit + trade_with_loss) * 100}%")
 
-def print_profit_factor(closed_positions):
+def print_profit_factor(closed_positions: List[Position]):
   gross_profit = 0
   gross_loss = 0
   for position in closed_positions:
@@ -84,7 +91,7 @@ def print_profit_factor(closed_positions):
   print(f"Gross Loss: {gross_loss: .2f}")
   print(f"Profit Factor: {gross_profit / -gross_loss}")
 
-def print_max_drawdown(initial_capital, transactions):
+def print_max_drawdown(initial_capital: float, transactions: List[Trade]):
   peak = initial_capital
   bottom = initial_capital
   drawdown = 0
