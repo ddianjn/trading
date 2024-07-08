@@ -21,7 +21,7 @@ class Position:
   def is_closed(self):
     return self.close_date is not None
 
-  def __eq__(self, other: Position):
+  def __eq__(self, other: "Position"):
     return self.stock == other.stock and self.open_date == other.open_date and self.open_price == other.open_price
 
   def print(self):
