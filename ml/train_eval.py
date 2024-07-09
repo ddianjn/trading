@@ -83,3 +83,37 @@ def eval_sequence(model_trainier: ModelTrainer,
                                                  predictions,
                                                  data.test_indices[look_back:])
   return data, test_loss, predictions
+
+def eval(model_trainier: ModelTrainer,
+         stock_ticker: str,
+         start: str = "2018-01-01",
+         end: str|None = None,
+         interval: str = "1d",
+         features: List[str] = ["Close", "High", "Low", "Volume"],
+         output_features: List[str] = ['Close'],
+         feature_generators = {},
+         test_size: int = 30,
+         print_result: bool = True,
+         plot_result: bool = True):
+  data = ml_data.prepare_data(stock_ticker,
+                              start = start,
+                              end = end,
+                              interval = interval,
+                              features = features,
+                              output_features = output_features,
+                              feature_generators = feature_generators,
+                              validate_size = 1,
+                              test_size = test_size)
+
+  print(model_trainier.model)
+  # Evaluate on test set (calculate MSE)
+  test_loss, predictions = model_trainier.eval(data.test_x, data.test_y)
+
+  if print_result:
+    print(f'Test Loss: {test_loss:.4f}')
+  # print(f"test_indices: {data.test_indices}\n\n")
+  if plot_result:
+    plotting.plot_sequence_prediction_comparison(data.test_data[output_features],
+                                                 predictions,
+                                                 data.test_indices)
+  return data, test_loss, predictions
