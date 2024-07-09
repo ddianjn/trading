@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import datetime
+from typing import Callable
 from trading.data import data_processing, data_fetching
 from trading import plotting
 from typing import List
@@ -39,7 +40,7 @@ def prepare_sequence_data(stock_ticker:str,
                  interval:str = "1d",
                  features: List[str] = ["Close", "High", "Low", "Volume"],
                  output_features: List[str] = ['Close'],
-                 feature_generators = {},
+                 feature_generators: List[Callable[pd.DataFrame, pd.DataFrame]] = [],
                  validate_size: int = 30,
                  test_size: int = 30,
                  look_back: int = 5,
@@ -53,8 +54,8 @@ def prepare_sequence_data(stock_ticker:str,
   if plot_candle_chart:
     plotting.plot_candlestick(stock_data)
 
-  for new_key, generator in feature_generators.items():
-    generator(new_key, stock_data)
+  for generator in feature_generators.items():
+    stock_data = generator(stock_data)
 
   train_data, validate_data, test_data = data_processing.split_data(stock_data,
                                                     validate_size = validate_size,
