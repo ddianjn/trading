@@ -142,8 +142,8 @@ def prepare_data(stock_ticker:str,
   if plot_candle_chart:
     plotting.plot_candlestick(stock_data)
 
-  for new_key, generator in feature_generators.items():
-    generator(new_key, stock_data)
+  for generator in feature_generators:
+    stock_data = generator(stock_data)
 
   train_data, validate_data, test_data = data_processing.split_data(stock_data,
                                                     validate_size = validate_size,
