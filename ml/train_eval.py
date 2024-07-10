@@ -94,8 +94,6 @@ def train_and_eval(model_trainer: ModelTrainer,
                    feature_generators = {},
                    validate_size: int = 30,
                    test_size: int = 30,
-                   look_back: int = 5,
-                   look_forward: int = 5,
                    epochs: int = 200,
                    early_stop_patience: int = 30,
                    print_train_steps: bool = True):
@@ -108,8 +106,6 @@ def train_and_eval(model_trainer: ModelTrainer,
     features = features,
     output_features = output_features,
     feature_generators = feature_generators,
-    look_back = look_back,
-    look_forward = look_forward,
     validate_size = validate_size,
     test_size = test_size)
   model_trainer.scalers = scalers
