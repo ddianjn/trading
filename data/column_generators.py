@@ -5,3 +5,12 @@ def generate_return(data: pd.DataFrame) -> None:
   return_col.fillna(0, inplace=True)
   data["% Return"] = return_col
   return data
+
+def lag_features(lag = 1):
+  def lag_feature_gnerator(data: pd.DataFrame):
+    columns = data.columns
+    for i in range(1, lag + 1):
+      for column in columns:
+        data[f'lag_{i}_{column}'] = data[column].shift(i)
+    return data.dropna()
+  return lag_feature_gnerator
