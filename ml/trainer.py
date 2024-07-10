@@ -3,6 +3,7 @@ import numpy as np
 class ModelTrainer:
   def __init__(self, batch_size: int = 64):
     self.batch_size = batch_size
+    self.scalers = None
 
   def fit_eval(self,
                train_x,
