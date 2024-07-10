@@ -79,9 +79,9 @@ def eval_sequence(model_trainier: ModelTrainer,
     print(f'Test Loss: {test_loss:.4f}')
   # print(f"test_indices: {data.test_indices}\n\n")
   if plot_result:
-    plotting.plot_sequence_prediction_comparison(data.test_data[output_features],
+    plotting.plot_sequence_prediction_comparison(data.test_data[model_trainier.output_features],
                                                  predictions,
-                                                 data.test_indices[look_back:])
+                                                 data.test_indices[model_trainier.look_back:])
   return data, test_loss, predictions
 
 def train_and_eval(model_trainer: ModelTrainer,
@@ -150,7 +150,7 @@ def eval(model_trainier: ModelTrainer,
     print(f'Test Loss: {test_loss:.4f}')
   # print(f"test_indices: {data.test_indices}\n\n")
   if plot_result:
-    plotting.plot_sequence_prediction_comparison(data.test_data[output_features],
+    plotting.plot_sequence_prediction_comparison(data.test_data[model_trainier.output_features],
                                                  predictions,
                                                  data.test_indices)
   return data, test_loss, predictions
