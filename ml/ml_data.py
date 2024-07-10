@@ -4,7 +4,7 @@ import datetime
 from typing import Callable
 from trading.data import data_processing, data_fetching
 from trading import plotting
-from typing import List
+from typing import List, Dict
 
 class TrainingData:
   def __init__(self,
@@ -38,6 +38,7 @@ def prepare_sequence_data(stock_ticker:str,
                  start:str = "2018-01-01",
                  end:str = None,
                  interval:str = "1d",
+                 scalers: Dict|None = None,
                  features: List[str] = ["Close", "High", "Low", "Volume"],
                  output_features: List[str] = ['Close'],
                  feature_generators: List[Callable[pd.DataFrame, pd.DataFrame]] = [],
@@ -69,7 +70,7 @@ def prepare_sequence_data(stock_ticker:str,
     print(f"test_data\n{test_data.tail()}")
 
   # Normalize
-  scaled_train_data, scaled_validate_data, scaled_test_data, scalers = data_processing.normalize_data(train_data, validate_data, test_data)
+  scaled_train_data, scaled_validate_data, scaled_test_data, scalers = data_processing.normalize_data(train_data, validate_data, test_data, scalers = scalers)
   if print_scaled_data:
     print(f"scaled_train_data\n{scaled_train_data.tail()}")
     print(f"scaled_test_data\n{scaled_test_data.tail()}")
@@ -157,7 +158,7 @@ def prepare_data(stock_ticker:str,
     print(f"test_data\n{test_data.tail()}")
 
   # Normalize
-  scaled_train_data, scaled_validate_data, scaled_test_data, scalers = data_processing.normalize_data(train_data, validate_data, test_data)
+  scaled_train_data, scaled_validate_data, scaled_test_data, scalers = data_processing.normalize_data(train_data, validate_data, test_data, scalers = scalers)
   if print_scaled_data:
     print(f"scaled_train_data\n{scaled_train_data.tail()}")
     print(f"scaled_test_data\n{scaled_test_data.tail()}")
