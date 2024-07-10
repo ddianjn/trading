@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from trading.ml import ml_data
 from trading.ml.trainer import ModelTrainer
 from trading import plotting
-from typing import List
+from typing import List, Dict
 
 def train_and_eval_sequence(model_trainer: ModelTrainer,
                             stock_ticker: str,
@@ -24,7 +24,7 @@ def train_and_eval_sequence(model_trainer: ModelTrainer,
   """
   if print_train_steps:
     print(model_trainer.model)
-  data = ml_data.prepare_sequence_data(
+  data, scalers = ml_data.prepare_sequence_data(
     stock_ticker,
     start = start,
     end = end,
@@ -35,6 +35,7 @@ def train_and_eval_sequence(model_trainer: ModelTrainer,
     look_forward = look_forward,
     validate_size = validate_size,
     test_size = test_size)
+  model_trainer.scalers = scalers
 
   train_loss, validate_loss = model_trainer.fit_eval(
       data.train_x,
@@ -59,10 +60,11 @@ def eval_sequence(model_trainier: ModelTrainer,
                   look_forward: int = 5,
                   print_result: bool = True,
                   plot_result: bool = True):
-  data = ml_data.prepare_sequence_data(stock_ticker,
+  data, _ = ml_data.prepare_sequence_data(stock_ticker,
                               start = start,
                               end = end,
                               interval = interval,
+                              scalers = model_trainier.scalers,
                               features = features,
                               output_features = output_features,
                               feature_generators = feature_generators,
@@ -95,10 +97,11 @@ def eval(model_trainier: ModelTrainer,
          test_size: int = 30,
          print_result: bool = True,
          plot_result: bool = True):
-  data = ml_data.prepare_data(stock_ticker,
+  data, _ = ml_data.prepare_data(stock_ticker,
                               start = start,
                               end = end,
                               interval = interval,
+                              scalers = model_trainier.scalers,
                               features = features,
                               output_features = output_features,
                               feature_generators = feature_generators,
