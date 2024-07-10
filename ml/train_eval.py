@@ -34,6 +34,11 @@ def train_and_eval_sequence(model_trainer: ModelTrainer,
     validate_size = validate_size,
     test_size = test_size)
   model_trainer.scalers = scalers
+  model_trainer.features = features
+  model_trainer.output_features = output_features
+  model_trainer.feature_generators = feature_generators
+  model_trainer.look_back = look_back
+  model_trainer.look_forward = look_forward
 
   train_loss, validate_loss = model_trainer.fit_eval(
       data.train_x,
@@ -50,12 +55,7 @@ def eval_sequence(model_trainier: ModelTrainer,
                   start: str = "2018-01-01",
                   end: str|None = None,
                   interval: str = "1d",
-                  features: List[str] = ["Close", "High", "Low", "Volume"],
-                  output_features: List[str] = ['Close'],
-                  feature_generators = {},
                   test_size: int = 30,
-                  look_back: int = 5,
-                  look_forward: int = 5,
                   print_result: bool = True,
                   plot_result: bool = True):
   data, _ = ml_data.prepare_sequence_data(stock_ticker,
@@ -63,11 +63,11 @@ def eval_sequence(model_trainier: ModelTrainer,
                               end = end,
                               interval = interval,
                               scalers = model_trainier.scalers,
-                              features = features,
-                              output_features = output_features,
-                              feature_generators = feature_generators,
-                              look_back = look_back,
-                              look_forward = look_forward,
+                              features = model_trainier.features,
+                              output_features = model_trainier.output_features,
+                              feature_generators = model_trainier.feature_generators,
+                              look_back = model_trainier.look_back,
+                              look_forward = model_trainier.look_forward,
                               validate_size = 1,
                               test_size = test_size)
 
@@ -109,6 +109,9 @@ def train_and_eval(model_trainer: ModelTrainer,
     validate_size = validate_size,
     test_size = test_size)
   model_trainer.scalers = scalers
+  model_trainer.features = features
+  model_trainer.output_features = output_features
+  model_trainer.feature_generators = feature_generators
 
   train_loss, validate_loss = model_trainer.fit_eval(
       data.train_x,
@@ -125,9 +128,6 @@ def eval(model_trainier: ModelTrainer,
          start: str = "2018-01-01",
          end: str|None = None,
          interval: str = "1d",
-         features: List[str] = ["Close", "High", "Low", "Volume"],
-         output_features: List[str] = ['Close'],
-         feature_generators = {},
          test_size: int = 30,
          print_result: bool = True,
          plot_result: bool = True):
@@ -136,9 +136,9 @@ def eval(model_trainier: ModelTrainer,
                               end = end,
                               interval = interval,
                               scalers = model_trainier.scalers,
-                              features = features,
-                              output_features = output_features,
-                              feature_generators = feature_generators,
+                              features = model_trainier.features,
+                              output_features = model_trainier.output_features,
+                              feature_generators = model_trainier.feature_generators,
                               validate_size = 1,
                               test_size = test_size)
 
