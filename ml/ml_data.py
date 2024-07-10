@@ -69,7 +69,7 @@ def prepare_sequence_data(stock_ticker:str,
     print(f"test_data\n{test_data.tail()}")
 
   # Normalize
-  scaled_train_data, scaled_validate_data, scaled_test_data = data_processing.normalize_data(train_data, validate_data, test_data)
+  scaled_train_data, scaled_validate_data, scaled_test_data, scalers = data_processing.normalize_data(train_data, validate_data, test_data)
   if print_scaled_data:
     print(f"scaled_train_data\n{scaled_train_data.tail()}")
     print(f"scaled_test_data\n{scaled_test_data.tail()}")
@@ -122,7 +122,7 @@ def prepare_sequence_data(stock_ticker:str,
                       test_y=test_y,
                       train_indices=train_indices,
                       validate_indices=validate_indices,
-                      test_indices=test_indices)
+                      test_indices=test_indices), scalers
 
 def prepare_data(stock_ticker:str,
                  start:str = "2018-01-01",
@@ -157,7 +157,7 @@ def prepare_data(stock_ticker:str,
     print(f"test_data\n{test_data.tail()}")
 
   # Normalize
-  scaled_train_data, scaled_validate_data, scaled_test_data = data_processing.normalize_data(train_data, validate_data, test_data)
+  scaled_train_data, scaled_validate_data, scaled_test_data, scalers = data_processing.normalize_data(train_data, validate_data, test_data)
   if print_scaled_data:
     print(f"scaled_train_data\n{scaled_train_data.tail()}")
     print(f"scaled_test_data\n{scaled_test_data.tail()}")
@@ -204,7 +204,7 @@ def prepare_data(stock_ticker:str,
                       test_y=test_y,
                       train_indices=train_indices,
                       validate_indices=validate_indices,
-                      test_indices=test_indices)
+                      test_indices=test_indices), scalers
 
 def _create_feature_label_data(data: pd.DataFrame,
                                scaled_data = None,
