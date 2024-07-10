@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import yfinance as yf
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 import datetime
-from typing import List
+from typing import List, Dict
 
 def split_data(data: pd.DataFrame,
                validate_size: int = 0,
@@ -28,8 +28,10 @@ def split_data(data: pd.DataFrame,
 def normalize_data(train_data: pd.DataFrame,
                    validate_data: pd.DataFrame,
                    test_data: pd.DataFrame,
+                   scalers: Dict|None = None,
                    scaler_creater = StandardScaler):
-  scalers = {}
+  if scalers is None:
+    scalers = {}
 
   # train_data.reset_index(inplace=True)
   # test_data.reset_index(inplace=True)
@@ -47,8 +49,11 @@ def normalize_data(train_data: pd.DataFrame,
     test_feature_data = test_data[[feature]].values
 
     # scalers[feature] = MinMaxScaler(feature_range=(0,1))
-    scalers[feature] = scaler_creater()
-    scaled_train_feature_data = scalers[feature].fit_transform(train_feature_data)
+    if not feature in scalers:
+      scalers[feature] = scaler_creater()
+      scaled_train_feature_data = scalers[feature].fit_transform(train_feature_data)
+    else:
+      scaled_train_feature_data = scalers[feature].transform(train_feature_data)
     if len(validate_feature_data) > 0:
       scaled_validate_feature_data = scalers[feature].transform(validate_feature_data)
     else:
