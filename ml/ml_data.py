@@ -36,7 +36,7 @@ class TrainingData:
     self.test_indices = test_indices
 
 class TrainingDatas:
-  def __init__(self, data_dict: Dict[TrainingData]):
+  def __init__(self, data_dict: Dict[str, TrainingData]):
     self.data_dict = data_dict
     self.train_x = np.vstack([d.train_x for _, d in data_dict])
     self.train_y = np.vstack([d.train_y for _, d in data_dict])
@@ -71,52 +71,56 @@ def prepare_sequence_data(stock_tickers: str|List[str],
                                                                           plot_split_chart = plot_split_chart,
                                                                           print_raw_data = print_raw_data)
   scalers = _create_scalers(train_datas)
+  training_datas = {}
+  for stock_ticker, stock_data in stock_datas:
+    train_data = train_datas[stock_ticker]
+    validate_data = validate_datas[stock_ticker]
+    test_data = test_datas[stock_ticker]
 
-  merged_train_data = pd.concat(train_datas.values())
-  # Normalize
-  scaled_train_data, scaled_validate_data, scaled_test_data, scalers = data_processing.normalize_data(train_data, validate_data, test_data, scalers = scalers)
-  if print_scaled_data:
-    print(f"scaled_train_data\n{scaled_train_data.tail()}")
-    print(f"scaled_test_data\n{scaled_test_data.tail()}")
+    # Normalize
+    scaled_train_data, scaled_validate_data, scaled_test_data, scalers = data_processing.normalize_data(train_data, validate_data, test_data, scalers = scalers)
+    if print_scaled_data:
+      print(f"scaled_train_data\n{scaled_train_data.tail()}")
+      print(f"scaled_test_data\n{scaled_test_data.tail()}")
 
-  # Create time series data
-  train_x, train_y, train_indices = data_processing.create_time_series_data(
-      train_data,
-      scaled_train_data,
-      features = features,
-      output_features = output_features,
-      look_back = look_back,
-      look_forward = look_forward)
-  validate_x, validate_y, validate_indices = data_processing.create_time_series_data(
-      validate_data,
-      scaled_validate_data,
-      features = features,
-      output_features = output_features,
-      fill_forward = True,
-      look_back = look_back,
-      look_forward = look_forward)
-  test_x, test_y, test_indices = data_processing.create_time_series_data(
-      test_data,
-      scaled_test_data,
-      features = features,
-      output_features = output_features,
-      look_back = look_back,
-      look_forward = look_forward,
-      fill_forward = True,
-      verbose = print_time_series_data)
+    # Create time series data
+    train_x, train_y, train_indices = data_processing.create_time_series_data(
+        train_data,
+        scaled_train_data,
+        features = features,
+        output_features = output_features,
+        look_back = look_back,
+        look_forward = look_forward)
+    validate_x, validate_y, validate_indices = data_processing.create_time_series_data(
+        validate_data,
+        scaled_validate_data,
+        features = features,
+        output_features = output_features,
+        fill_forward = True,
+        look_back = look_back,
+        look_forward = look_forward)
+    test_x, test_y, test_indices = data_processing.create_time_series_data(
+        test_data,
+        scaled_test_data,
+        features = features,
+        output_features = output_features,
+        look_back = look_back,
+        look_forward = look_forward,
+        fill_forward = True,
+        verbose = print_time_series_data)
 
-  train_x = np.array(train_x)
-  train_y = np.array(train_y)
-  validate_x = np.array(validate_x)
-  validate_y = np.array(validate_y)
-  test_x = np.array(test_x)
-  test_y = np.array(test_y)
+    train_x = np.array(train_x)
+    train_y = np.array(train_y)
+    validate_x = np.array(validate_x)
+    validate_y = np.array(validate_y)
+    test_x = np.array(test_x)
+    test_y = np.array(test_y)
+  
+    if print_time_series_data:
+      print(f"train_x shape: {train_x.shape}, train_y shape: {train_y.shape}")
+      print(f"test_x shape: {test_x.shape}, test_y shape: {test_y.shape}")
 
-  if print_time_series_data:
-    print(f"train_x shape: {train_x.shape}, train_y shape: {train_y.shape}")
-    print(f"test_x shape: {test_x.shape}, test_y shape: {test_y.shape}")
-
-  return TrainingData(train_data=train_data,
+    training_datas[stock_ticker] = TrainingData(train_data=train_data,
                       validate_data=validate_data,
                       test_data=test_data,
                       train_x=train_x,
@@ -127,7 +131,8 @@ def prepare_sequence_data(stock_tickers: str|List[str],
                       test_y=test_y,
                       train_indices=train_indices,
                       validate_indices=validate_indices,
-                      test_indices=test_indices), scalers
+                      test_indices=test_indices)
+  return TrainingDatas(training_datas), scalers
 
 def prepare_data(stock_ticker:str,
                  start:str = "2018-01-01",
@@ -144,73 +149,73 @@ def prepare_data(stock_ticker:str,
                  print_raw_data: bool = False,
                  print_scaled_data: bool = False,
                  verbose: bool = False):
-  stock_data = data_fetching.download_data(stock_ticker, start, end, interval = interval)
-  if plot_candle_chart:
-    plotting.plot_candlestick(stock_data)
+  stock_datas, train_datas, validate_datas, test_datas = _fetch_raw_datas(stock_tickers = stock_tickers,
+                                                                          start = start,
+                                                                          end = end,
+                                                                          interval = interval,
+                                                                          feature_generators = feature_generators,
+                                                                          validate_size = validate_size,
+                                                                          test_size = test_size,
+                                                                          plot_candle_chart = plot_candle_chart,
+                                                                          plot_split_chart = plot_split_chart,
+                                                                          print_raw_data = print_raw_data)
+  scalers = _create_scalers(train_datas)
+  training_datas = {}
+  for stock_ticker, stock_data in stock_datas:
+    train_data = train_datas[stock_ticker]
+    validate_data = validate_datas[stock_ticker]
+    test_data = test_datas[stock_ticker]
 
-  for generator in feature_generators:
-    stock_data = generator(stock_data)
+    # Normalize
+    scaled_train_data, scaled_validate_data, scaled_test_data, scalers = data_processing.normalize_data(train_data, validate_data, test_data, scalers = scalers)
+    if print_scaled_data:
+      print(f"scaled_train_data\n{scaled_train_data.tail()}")
+      print(f"scaled_test_data\n{scaled_test_data.tail()}")
 
-  train_data, validate_data, test_data = data_processing.split_data(stock_data,
-                                                    validate_size = validate_size,
-                                                    test_size = test_size,
-                                                    plot_split_chart = plot_split_chart)
+    # Create train, validate and test data
+    train_x, train_y, train_indices = _create_feature_label_data(
+        train_data,
+        scaled_train_data,
+        features = features,
+        output_features = output_features)
+    validate_x, validate_y, validate_indices = _create_feature_label_data(
+        validate_data,
+        scaled_validate_data,
+        features = features,
+        output_features = output_features,
+        fill_forward = True)
+    test_x, test_y, test_indices = _create_feature_label_data(
+        test_data,
+        scaled_test_data,
+        features = features,
+        output_features = output_features,
+        fill_forward = True,
+        verbose = verbose)
+  
+    train_x = np.array(train_x)
+    train_y = np.array(train_y)
+    validate_x = np.array(validate_x)
+    validate_y = np.array(validate_y)
+    test_x = np.array(test_x)
+    test_y = np.array(test_y)
 
-  if print_raw_data:
-    print(f"\nFeatures\n{train_data.columns}")
-    print(f"train_data\n{train_data.tail()}")
-    print(f"validate_data\n{validate_data.tail()}")
-    print(f"test_data\n{test_data.tail()}")
-
-  # Normalize
-  scaled_train_data, scaled_validate_data, scaled_test_data, scalers = data_processing.normalize_data(train_data, validate_data, test_data, scalers = scalers)
-  if print_scaled_data:
-    print(f"scaled_train_data\n{scaled_train_data.tail()}")
-    print(f"scaled_test_data\n{scaled_test_data.tail()}")
-
-  # Create time series data
-  train_x, train_y, train_indices = _create_feature_label_data(
-      train_data,
-      scaled_train_data,
-      features = features,
-      output_features = output_features)
-  validate_x, validate_y, validate_indices = _create_feature_label_data(
-      validate_data,
-      scaled_validate_data,
-      features = features,
-      output_features = output_features,
-      fill_forward = True)
-  test_x, test_y, test_indices = _create_feature_label_data(
-      test_data,
-      scaled_test_data,
-      features = features,
-      output_features = output_features,
-      fill_forward = True,
-      verbose = verbose)
-
-  train_x = np.array(train_x)
-  train_y = np.array(train_y)
-  validate_x = np.array(validate_x)
-  validate_y = np.array(validate_y)
-  test_x = np.array(test_x)
-  test_y = np.array(test_y)
-
-  if verbose:
-    print(f"train_x shape: {train_x.shape}, train_y shape: {train_y.shape}")
-    print(f"test_x shape: {test_x.shape}, test_y shape: {test_y.shape}")
-
-  return TrainingData(train_data=train_data,
-                      validate_data=validate_data,
-                      test_data=test_data,
-                      train_x=train_x,
-                      train_y=train_y,
-                      validate_x=validate_x,
-                      validate_y=validate_y,
-                      test_x=test_x,
-                      test_y=test_y,
-                      train_indices=train_indices,
-                      validate_indices=validate_indices,
-                      test_indices=test_indices), scalers
+    if verbose:
+      print(f"train_x shape: {train_x.shape}, train_y shape: {train_y.shape}")
+      print(f"test_x shape: {test_x.shape}, test_y shape: {test_y.shape}")
+  
+    training_datas[stock_ticker] = TrainingData(train_data=train_data,
+                        validate_data=validate_data,
+                        test_data=test_data,
+                        train_x=train_x,
+                        train_y=train_y,
+                        validate_x=validate_x,
+                        validate_y=validate_y,
+                        test_x=test_x,
+                        test_y=test_y,
+                        train_indices=train_indices,
+                        validate_indices=validate_indices,
+                        test_indices=test_indices)
+  return TrainingDatas(training_datas), scalers
 
 def _create_feature_label_data(data: pd.DataFrame,
                                scaled_data = None,
