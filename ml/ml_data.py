@@ -134,10 +134,10 @@ def prepare_sequence_data(stock_tickers: str|List[str],
                       test_indices=test_indices)
   return TrainingDatas(training_datas), scalers
 
-def prepare_data(stock_ticker:str,
-                 start:str = "2018-01-01",
-                 end:str = None,
-                 interval:str = "1d",
+def prepare_data(stock_tickers: str|List[str],
+                 start: str = "2018-01-01",
+                 end: str = None,
+                 interval: str = "1d",
                  scalers: Dict|None = None,
                  features: List[str] = ["Close", "High", "Low", "Volume"],
                  output_features: List[str] = ['Close'],
