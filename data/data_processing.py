@@ -80,7 +80,7 @@ def normalize_data(train_data: pd.DataFrame,
 
   scaled_train_data = pd.DataFrame(scaled_train_data, columns=train_data.columns)
   scaled_validate_data = pd.DataFrame(scaled_validate_data, columns=train_data.columns)
-  scaled_test_data = pd.DataFrame(scaled_test_data, columns=test_data.columns)
+  scaled_test_data = pd.DataFrame(scaled_test_data, columns=train_data.columns)
   return scaled_train_data, scaled_validate_data, scaled_test_data, scalers
 
 def create_time_series_data(data: pd.DataFrame,
