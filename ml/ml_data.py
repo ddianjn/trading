@@ -120,18 +120,20 @@ def prepare_sequence_data(stock_tickers: str|List[str],
       print(f"train_x shape: {train_x.shape}, train_y shape: {train_y.shape}")
       print(f"test_x shape: {test_x.shape}, test_y shape: {test_y.shape}")
 
-    training_datas[stock_ticker] = TrainingData(train_data=train_data,
-                      validate_data=validate_data,
-                      test_data=test_data,
-                      train_x=train_x,
-                      train_y=train_y,
-                      validate_x=validate_x,
-                      validate_y=validate_y,
-                      test_x=test_x,
-                      test_y=test_y,
-                      train_indices=train_indices,
-                      validate_indices=validate_indices,
-                      test_indices=test_indices)
+    training_datas[stock_ticker] = TrainingData(
+      raw_data=stock_data,
+      train_data=train_data,
+      validate_data=validate_data,
+      test_data=test_data,
+      train_x=train_x,
+      train_y=train_y,
+      validate_x=validate_x,
+      validate_y=validate_y,
+      test_x=test_x,
+      test_y=test_y,
+      train_indices=train_indices,
+      validate_indices=validate_indices,
+      test_indices=test_indices)
   return TrainingDatas(training_datas), scalers
 
 def prepare_data(stock_tickers: str|List[str],
@@ -203,18 +205,20 @@ def prepare_data(stock_tickers: str|List[str],
       print(f"train_x shape: {train_x.shape}, train_y shape: {train_y.shape}")
       print(f"test_x shape: {test_x.shape}, test_y shape: {test_y.shape}")
   
-    training_datas[stock_ticker] = TrainingData(train_data=train_data,
-                        validate_data=validate_data,
-                        test_data=test_data,
-                        train_x=train_x,
-                        train_y=train_y,
-                        validate_x=validate_x,
-                        validate_y=validate_y,
-                        test_x=test_x,
-                        test_y=test_y,
-                        train_indices=train_indices,
-                        validate_indices=validate_indices,
-                        test_indices=test_indices)
+    training_datas[stock_ticker] = TrainingData(
+      raw_data=stock_data,
+      train_data=train_data,
+      validate_data=validate_data,
+      test_data=test_data,
+      train_x=train_x,
+      train_y=train_y,
+      validate_x=validate_x,
+      validate_y=validate_y,
+      test_x=test_x,
+      test_y=test_y,
+      train_indices=train_indices,
+      validate_indices=validate_indices,
+      test_indices=test_indices)
   return TrainingDatas(training_datas), scalers
 
 def _create_feature_label_data(data: pd.DataFrame,
