@@ -297,6 +297,6 @@ def _fetch_raw_datas(stock_tickers: str|List[str],
 def _create_scalers(train_datas: Dict[str, pd.DataFrame]):
   merged_train_data = pd.concat(train_datas.values())
   _, _, _, scalers = data_processing.normalize_data(merged_train_data,
-                                                    merged_train_data.iloc[0],
-                                                    merged_train_data.iloc[0])
+                                                    merged_train_data.head(1),
+                                                    merged_train_data.head(1))
   return scalers
