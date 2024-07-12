@@ -30,13 +30,13 @@ def return_categories(data: pd.DataFrame) -> None:
 
 def sma(period: int):
   def sma_generator(data: pd.DataFrame):
-    data = _add_new_columns(data, {f"MA{period}": indicators.sma(data, period)})
+    data = _add_new_columns(data, indicators.sma(data, period))
     return data.dropna()
   return sma_generator
 
 def ema(period: int):
   def ema_generator(data: pd.DataFrame):
-    data = _add_new_columns(data, {f"EMA{period}": indicators.ema(data, period)})
+    data = _add_new_columns(data, indicators.ema(data, period))
     return data.dropna()
   return ema_generator
 
@@ -65,6 +65,6 @@ def ema_diff(short_period: int, long_period: int):
     return data.dropna()
   return ema_diff_generator
 
-def _add_new_columns(data: pd.DataFrame, new_columns: Dict[str, pd.DataFrame]):
+def _add_new_columns(data: pd.DataFrame, new_columns: pd.DataFrame|Dict[str, pd.DataFrame]):
   data = pd.concat([data, pd.DataFrame(new_columns)], axis=1)
   return data
