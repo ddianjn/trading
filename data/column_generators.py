@@ -13,7 +13,6 @@ def lag_features(lag = 1):
     for i in range(1, lag + 1):
       for column in columns:
         new_columns[f'lag_{i}_{column}'] = data[column].shift(i)
-    print(pd.DataFrame(new_columns))
     data = pd.concat([data, pd.DataFrame(new_columns)], axis=1)
     return data.dropna()
   return lag_feature_gnerator
