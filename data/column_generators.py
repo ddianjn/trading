@@ -34,6 +34,31 @@ def sma(period: int):
     return data.dropna()
   return sma_generator
 
+def sma_diff(short_period: int, long_period: int):
+  if short_period > long_period:
+    temp = short_period
+    short_period = long_period
+    long_period = temp
+  def sma_diff_generator(data: pd.DataFrame):
+    new_columns = {}
+
+    if f"MA{short_period}" in data:
+      short_sma = data[f"MA{short_period}"]
+    else:
+      short_sma = indicators.sma(data, short_period)
+      new_columns[f"MA{short_period}"] = short_sma
+
+    if f"MA{long_period}" in data:
+      long_sma = data[f"MA{long_period}"]
+    else:
+      long_sma = indicators.sma(data, long_period)
+      new_columns[f"MA{long_period}"] = long_sma
+  
+    new_columns[f"MA diff:{short_period}-{long_period}"] = short_sma - long_sma
+    data = _add_new_columns(data, new_columns)
+    return data.dropna()
+  return sma_diff_generator
+
 def ema(period: int):
   def ema_generator(data: pd.DataFrame):
     data = _add_new_columns(data, indicators.ema(data, period))
