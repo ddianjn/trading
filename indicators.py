@@ -16,5 +16,5 @@ def ema(data: pd.DataFrame, period: int):
   """
 
   alpha = 2 / (period + 1)
-  ema = data.ewm(alpha=alpha, adjust=False).mean()
+  ema = data['Close'].ewm(alpha=alpha, adjust=False).mean()
   return ema
