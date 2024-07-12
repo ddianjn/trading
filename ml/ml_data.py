@@ -38,10 +38,10 @@ class TrainingData:
 class TrainingDatas:
   def __init__(self, data_dict: Dict[str, TrainingData]):
     self.data_dict = data_dict
-    self.train_x = np.vstack([d.train_x for _, d in data_dict])
-    self.train_y = np.vstack([d.train_y for _, d in data_dict])
-    self.validate_x = np.vstack([d.validate_x for _, d in data_dict])
-    self.validate_y = np.vstack([d.validate_y for _, d in data_dict])
+    self.train_x = np.vstack([d.train_x for d in data_dict.values()])
+    self.train_y = np.vstack([d.train_y for d in data_dict.values()])
+    self.validate_x = np.vstack([d.validate_x for d in data_dict.values()])
+    self.validate_y = np.vstack([d.validate_y for d in data_dict.values()])
 
 def prepare_sequence_data(stock_tickers: str|List[str],
                  start: str = "2018-01-01",
