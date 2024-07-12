@@ -72,7 +72,7 @@ def prepare_sequence_data(stock_tickers: str|List[str],
                                                                           print_raw_data = print_raw_data)
   scalers = _create_scalers(train_datas)
   training_datas = {}
-  for stock_ticker, stock_data in stock_datas:
+  for stock_ticker, stock_data in stock_datas.items():
     train_data = train_datas[stock_ticker]
     validate_data = validate_datas[stock_ticker]
     test_data = test_datas[stock_ticker]
@@ -161,7 +161,7 @@ def prepare_data(stock_tickers: str|List[str],
                                                                           print_raw_data = print_raw_data)
   scalers = _create_scalers(train_datas)
   training_datas = {}
-  for stock_ticker, stock_data in stock_datas:
+  for stock_ticker, stock_data in stock_datas.items():
     train_data = train_datas[stock_ticker]
     validate_data = validate_datas[stock_ticker]
     test_data = test_datas[stock_ticker]
