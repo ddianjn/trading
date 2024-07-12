@@ -16,7 +16,7 @@ def lag_features(lag: int = 1):
         new_columns[f'lag_{i}_{column}'] = data[column].shift(i)
     data = _add_new_columns(data, new_columns)
     return data.dropna()
-  return lag_feature_gnerator
+  return lag_feature_generator
 
 def return_categories(data: pd.DataFrame) -> None:
   day5_max = data["High"].rolling(window=2).max().shift(-2)
