@@ -1,6 +1,6 @@
 import numpy as np
 from trading.ml.trainer import ModelTrainer
-from xgboost import XGBRegressor
+from xgboost import XGBRegressor, XGBClassifier
 from sklearn.metrics import mean_squared_error, accuracy_score, precision_score, recall_score, f1_score
 
 # Obvious caveat: Can't predict well if the price raeches all time high.
