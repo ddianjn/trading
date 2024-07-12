@@ -20,10 +20,10 @@ def ema(data: pd.DataFrame, period: int):
   ema = data['Close'].ewm(alpha=alpha, adjust=False).mean()
   return pd.DataFrame({f'EMA{period}': ema})
 
-def calculate_macd(data: pd.DataFrame,
-                   short_period: int = 12,
-                   long_period: int = 26,
-                   signal_period: int = 9):
+def macd(data: pd.DataFrame,
+         short_period: int = 12,
+         long_period: int = 26,
+         signal_period: int = 9):
   """Calculates the MACD, Signal, and Histogram for a given data series.
 
   Args:
