@@ -59,6 +59,6 @@ def sma_diff(short_period: int, long_period: int):
     return data.dropna()
   return sma_diff_generator
 
-def _add_new_columns(data: pd.DataFrame, new_cols: Dict[str, pd.DataFrame]):
+def _add_new_columns(data: pd.DataFrame, new_columns: Dict[str, pd.DataFrame]):
   data = pd.concat([data, pd.DataFrame(new_columns)], axis=1)
   return data
