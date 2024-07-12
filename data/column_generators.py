@@ -35,6 +35,10 @@ def sma(period: int):
   return sma_generator
 
 def sma_diff(short_period: int, long_period: int):
+  if short_period > long_period:
+    temp = short_period
+    short_period = long_period
+    long_period = temp
   def sma_diff_generator(data: pd.DataFrame):
     new_columns = {}
     if not f"MA{short_period}" in data:
