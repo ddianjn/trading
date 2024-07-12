@@ -267,7 +267,7 @@ def _fetch_raw_datas(stock_tickers: str|List[str],
                  plot_candle_chart: bool = False,
                  plot_split_chart: bool = False,
                  print_raw_data: bool = False):
-  if stock_tickers is str:
+  if isinstance(stock_tickers, str):
     stock_tickers = [stock_tickers]
 
   stock_datas = {}
