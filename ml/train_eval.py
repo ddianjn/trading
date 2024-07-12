@@ -73,15 +73,15 @@ def eval_sequence(model_trainier: ModelTrainer,
 
   print(model_trainier.model)
   # Evaluate on test set (calculate MSE)
-  test_loss, predictions = model_trainier.eval(data.test_x, data.test_y)
+  test_loss, predictions = model_trainier.eval(data[stock_ticker].test_x, data[stock_ticker].test_y)
 
   if print_result:
     print(f'Test Loss: {test_loss:.4f}')
-  # print(f"test_indices: {data.test_indices}\n\n")
+  # print(f"test_indices: {data[stock_ticker].test_indices}\n\n")
   if plot_result:
-    plotting.plot_sequence_prediction_comparison(data.test_data[model_trainier.output_features],
+    plotting.plot_sequence_prediction_comparison(data[stock_ticker].test_data[model_trainier.output_features],
                                                  predictions,
-                                                 data.test_indices[model_trainier.look_back:])
+                                                 data[stock_ticker].test_indices[model_trainier.look_back:])
   return data, test_loss, predictions
 
 def train_and_eval(model_trainer: ModelTrainer,
@@ -144,13 +144,13 @@ def eval(model_trainier: ModelTrainer,
 
   print(model_trainier.model)
   # Evaluate on test set (calculate MSE)
-  test_loss, predictions = model_trainier.eval(data.test_x, data.test_y)
+  test_loss, predictions = model_trainier.eval(data[stock_ticker].test_x, data[stock_ticker].test_y)
 
   if print_result:
     print(f'Test Loss: {test_loss:.4f}')
-  # print(f"test_indices: {data.test_indices}\n\n")
+  # print(f"test_indices: {data[stock_ticker].test_indices}\n\n")
   if plot_result:
-    plotting.plot_sequence_prediction_comparison(data.test_data[model_trainier.output_features],
+    plotting.plot_sequence_prediction_comparison(data[stock_ticker].test_data[model_trainier.output_features],
                                                  predictions,
-                                                 data.test_indices)
+                                                 data[stock_ticker].test_indices)
   return data, test_loss, predictions
