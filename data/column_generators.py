@@ -90,6 +90,22 @@ def ema_diff(short_period: int, long_period: int):
     return data.dropna()
   return ema_diff_generator
 
+def macd(short_period: int = 12,
+         long_period: int = 26,
+         signal_period: int = 9):
+  if short_period > long_period:
+    temp = short_period
+    short_period = long_period
+    long_period = temp
+  def macd_generator(data: pd.DataFrame):
+    macd = indicators.macd(data,
+                           short_period = short_period,
+                           long_period = long_period,
+                           signal_period = signal_period)
+    data = _add_new_columns(data, macd)
+    return data.dropna()
+  return macd_generator
+
 def _add_new_columns(data: pd.DataFrame, new_columns: pd.DataFrame|Dict[str, pd.DataFrame]):
   data = pd.concat([data, pd.DataFrame(new_columns)], axis=1)
   return data
