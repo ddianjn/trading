@@ -54,7 +54,7 @@ def sma_diff(short_period: int, long_period: int):
       long_sma = indicators.sma(data, long_period)
       new_columns.append(long_sma)
 
-    diff = {f"MA diff:{short_period}-{long_period}": short_sma - long_sma}
+    diff = pd.DataFrame({f"MA diff:{short_period}-{long_period}": short_sma - long_sma})
     new_columns.append(diff)
     data = _add_new_columns(data, new_columns)
     return data.dropna()
@@ -86,7 +86,7 @@ def ema_diff(short_period: int, long_period: int):
       long_ema = indicators.ema(data, long_period)
       new_columns.append(long_ema)
 
-    diff = {f"EMA diff:{short_period}-{long_period}": short_ema - long_ema}
+    diff = pd.DataFrame({f"EMA diff:{short_period}-{long_period}": short_ema - long_ema})
     new_columns.append(diff)
     data = _add_new_columns(data, new_columns)
     return data.dropna()
