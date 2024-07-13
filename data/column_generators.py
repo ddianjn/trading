@@ -112,6 +112,12 @@ def macd(short_period: int = 12,
     return data.dropna()
   return macd_generator
 
-def _add_new_columns(data: pd.DataFrame, new_columns: pd.DataFrame|Dict[str, pd.DataFrame]):
-  data = pd.concat([data, pd.DataFrame(new_columns)], axis=1)
+def _add_new_columns(data: pd.DataFrame, new_columns: pd.DataFrame|Dict[str, pd.Series]|List[pd.DataFrame]):
+  if isinstance(new_columns, pd.DataFrame):
+    data = pd.concat([data, new_columns], axis=1)
+  elif isinstance(new_columns, Dict):
+    data = pd.concat([data, pd.DataFrame(new_columns)], axis=1)
+  elif isinstance(new_columns, List):
+    data = pd.concat([data] + new_columns, axis=1)
+
   return data
