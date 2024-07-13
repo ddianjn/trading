@@ -47,12 +47,14 @@ def sma_diff(short_period: int, long_period: int):
     else:
       short_sma = indicators.sma(data, short_period)
       new_columns.append(short_sma)
+      short_sma = short_sma[f"MA{short_period}"]
 
     if f"MA{long_period}" in data:
       long_sma = data[f"MA{long_period}"]
     else:
       long_sma = indicators.sma(data, long_period)
       new_columns.append(long_sma)
+      long_sma = long_sma[f"MA{long_period}"]
 
     diff = pd.DataFrame({f"MA diff:{short_period}-{long_period}": short_sma - long_sma})
     new_columns.append(diff)
@@ -79,12 +81,14 @@ def ema_diff(short_period: int, long_period: int):
     else:
       short_ema = indicators.ema(data, short_period)
       new_columns.append(short_ema)
+      short_ema = short_ema[f"MA{short_period}"]
 
     if f"EMA{long_period}" in data:
       long_ema = data[f"EMA{long_period}"]
     else:
       long_ema = indicators.ema(data, long_period)
       new_columns.append(long_ema)
+      long_ema = long_ema[f"EMA{long_period}"]
 
     diff = pd.DataFrame({f"EMA diff:{short_period}-{long_period}": short_ema - long_ema})
     new_columns.append(diff)
