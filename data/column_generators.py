@@ -1,6 +1,6 @@
 import pandas as pd
 from trading import indicators
-from typing import Dict
+from typing import Dict, List
 
 def generate_return(data: pd.DataFrame) -> None:
   return_col = data["Close"].pct_change() * 100
