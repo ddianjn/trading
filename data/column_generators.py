@@ -72,7 +72,7 @@ def ema_diff(short_period: int, long_period: int):
     short_period = long_period
     long_period = temp
   def ema_diff_generator(data: pd.DataFrame):
-    new_columns = {}
+    new_columns = []
 
     if f"EMA{short_period}" in data:
       short_ema = data[f"EMA{short_period}"]
