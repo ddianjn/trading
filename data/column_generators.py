@@ -81,7 +81,7 @@ def ema_diff(short_period: int, long_period: int):
     else:
       short_ema = indicators.ema(data, short_period)
       new_columns.append(short_ema)
-      short_ema = short_ema[f"MA{short_period}"]
+      short_ema = short_ema[f"EMA{short_period}"]
 
     if f"EMA{long_period}" in data:
       long_ema = data[f"EMA{long_period}"]
