@@ -40,21 +40,22 @@ def sma_diff(short_period: int, long_period: int):
     short_period = long_period
     long_period = temp
   def sma_diff_generator(data: pd.DataFrame):
-    new_columns = {}
+    new_columns = []
 
     if f"MA{short_period}" in data:
       short_sma = data[f"MA{short_period}"]
     else:
       short_sma = indicators.sma(data, short_period)
-      new_columns[f"MA{short_period}"] = short_sma
+      new_columns.append(short_sma)
 
     if f"MA{long_period}" in data:
       long_sma = data[f"MA{long_period}"]
     else:
       long_sma = indicators.sma(data, long_period)
-      new_columns[f"MA{long_period}"] = long_sma
-  
-    new_columns[f"MA diff:{short_period}-{long_period}"] = short_sma - long_sma
+      new_columns.append(long_sma)
+
+    diff = {f"MA diff:{short_period}-{long_period}": short_sma - long_sma}
+    new_columns.append(diff)
     data = _add_new_columns(data, new_columns)
     return data.dropna()
   return sma_diff_generator
@@ -77,15 +78,16 @@ def ema_diff(short_period: int, long_period: int):
       short_ema = data[f"EMA{short_period}"]
     else:
       short_ema = indicators.ema(data, short_period)
-      new_columns[f"EMA{short_period}"] = short_ema
+      new_columns.append(short_ema)
 
     if f"EMA{long_period}" in data:
       long_ema = data[f"EMA{long_period}"]
     else:
       long_ema = indicators.ema(data, long_period)
-      new_columns[f"EMA{long_period}"] = long_ema
-  
-    new_columns[f"EMA diff:{short_period}-{long_period}"] = short_ema - long_ema
+      new_columns.append(long_ema)
+
+    diff = {f"EMA diff:{short_period}-{long_period}": short_ema - long_ema}
+    new_columns.append(diff)
     data = _add_new_columns(data, new_columns)
     return data.dropna()
   return ema_diff_generator
