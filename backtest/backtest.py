@@ -11,7 +11,7 @@ def backtest(stocks: List[str]|str,
              strategies: List = [],
              initial_capital: float = 100000,
              print_trades: bool = False,
-             print_summary: bool = False) -> pd.DataFrame:
+             print_summary: bool = False) -> pd.DataFrame, List[Trade]:
   if isinstance(stocks, str):
     stocks = [stocks]
   res = []
@@ -50,7 +50,7 @@ def backtest(stocks: List[str]|str,
       if print_trades:
         trade.print()
     res.append(summarize(stock, data, initial_capital, cash, transactions, closed_positions, print_summary))
-  return pd.DataFrame(res)
+  return pd.DataFrame(res), transactions
 
 def summarize(stock: str,
               data: pd.DataFrame,
