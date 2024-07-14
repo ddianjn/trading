@@ -25,6 +25,6 @@ class Trade:
       #     f"{self.trade_type} Date: {self.date}, Price: {self.price: .2f}, Shares: {self.shares: .2f}\nGain: {gain: .2f}, % Gain: {percent_gain*100}%\n",
       #     color=color))
       color = Fore.GREEN if gain > 0 else Fore.RED
-      print(f"{color}{self.trade_type} {stock} Date: {self.date}, Price: {self.price: .2f}, Shares: {self.shares: .2f}\nGain: {gain: .2f}, % Gain: {percent_gain*100}%\n{Style.RESET_ALL}")
+      print(f"{color}{self.trade_type} {self.stock} Date: {self.date}, Price: {self.price: .2f}, Shares: {self.shares: .2f}\nGain: {gain: .2f}, % Gain: {percent_gain*100}%\n{Style.RESET_ALL}")
     else:
       print(f"{self.trade_type} {self.stock} Date: {self.date}, Price: {self.price: .2f}, Shares: {self.shares: .2f}\n")
