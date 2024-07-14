@@ -12,6 +12,8 @@ class Position:
     self.close_date = None
     self.close_price = None
     self.profit = None
+    self.target_price = None
+    self.stop_loss = None
 
   def close(self, date, price: float):
     self.close_date = date
