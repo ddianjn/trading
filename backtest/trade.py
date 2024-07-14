@@ -1,4 +1,4 @@
-fimport termcolor
+import termcolor
 from colorama import Fore, Style
 
 class Trade:
