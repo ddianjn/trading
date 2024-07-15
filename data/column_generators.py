@@ -18,15 +18,50 @@ def lag_features(lag: int = 1):
     return data.dropna()
   return lag_feature_generator
 
-def return_categories(data: pd.DataFrame) -> None:
-  day5_max = data["High"].rolling(window=2).max().shift(-2)
-  data["5 day high"] = day5_max
-  return_col = (day5_max - data["Close"]) / data["Close"]
-  return_col.fillna(0, inplace=True)
-  data["5 day highest return"] = return_col
-  categories_col = (return_col >= 0.015).astype(int)
-  data["5 day Return Buckets"] = categories_col
-  return data
+def return_category(period: int, return_target: float):
+  def return_category_generator(data: pd.DataFrame):
+    new_columns = {}
+    high = data['High'].rolling(window=period).max().shift(-period)
+    new_columns[f"high_{period}"] = high
+
+    max_return = (high - data['Open'].shift(-1)) / data['Open'].shift(-1)
+    new_columns[f"max_return_{period}"] = max_return
+
+    category = (max_return >= return_target).astype(int)
+    new_columns[f"return_category_{period}_{return_target}"] = category
+    data = _add_new_columns(data, new_columns)
+    return data.dropna()
+  return return_category_generator
+
+def loss_category(period: int, loss_target: float):
+  def loss_category_generator(data: pd.DataFrame):
+    new_columns = {}
+    low = data['Low'].rolling(window=period).min().shift(-period)
+    new_columns[f"low_{period}"] = low
+
+    max_loss = (low - data['Open'].shift(-1)) / data['Open'].shift(-1)
+    new_columns[f"max_loss_{period}"] = max_loss
+
+    category = (max_loss <= loss_target).astype(int)
+    new_columns[f"loss_category_{period}_{loss_target}"] = category
+    data = _add_new_columns(data, new_columns)
+    return data.dropna()
+  return loss_category_generator
+
+def return_loss_category(period: int, return_target: float, loss_target: float):
+  def return_loss_category_generator(data: pd.DataFrame):
+    new_columns = {}
+    
+    if f"return_category_{period}_{return_target}" not in data:
+      data = return_category(period, return_target)(data)
+    if f"loss_category_{period}_{loss_target}" not in data:
+      data = loss_category(period, loss_target)(data)
+
+    new_values = (data[f"return_category_{period}_{return_target}"] > data[f"loss_category_{period}_{loss_target}"]).astype(int)
+    new_columns = {f"return_loss_category_{period}_{return_target}_{loss_target}": new_values}    
+    data = _add_new_columns(data, new_columns)
+    return data.dropna()
+  return return_loss_category_generator
 
 def sma(period: int):
   def sma_generator(data: pd.DataFrame):
