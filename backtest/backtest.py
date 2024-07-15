@@ -23,7 +23,7 @@ def backtest(stocks: List[str]|str,
     positions = []
     closed_positions = []
     transactions = []
-    for i in range(2, len(data) - 2):
+    for i in range(len(data)):
       for strategy in strategies:
         trades = strategy.trade(stock, data, i, cash, positions)
         for trade in trades:
@@ -90,7 +90,10 @@ def calculate_profit_trades(transactions: List[Trade],
         trade_with_profit += 1
       else:
         trade_with_loss += 1
-  profit_rate = trade_with_profit / (trade_with_profit + trade_with_loss)
+  if trade_with_profit == 0:
+    profit_rate = 0
+  else:
+    profit_rate = trade_with_profit / (trade_with_profit + trade_with_loss)
   if print_summary:
     print(f"Trade with Profit: {trade_with_profit: .2f}")
     print(f"Trade with loss: {trade_with_loss: .2f}")
