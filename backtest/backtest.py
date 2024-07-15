@@ -36,6 +36,8 @@ def backtest(stocks: List[str]|str,
             cash += position.close_price * position.shares
           else:
             cash -= position.open_price * position.shares
+      if print_trades:
+        print(f"Cash on {data["Date"][i]}: {cash}")
     end_price = data['Close'][len(data) - 1]
     end_date = data['Date'][len(data) - 1]
     for position in positions:
