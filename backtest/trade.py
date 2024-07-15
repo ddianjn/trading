@@ -17,7 +17,7 @@ class Trade:
     self.unit_cost = unit_cost
 
   def print(self):
-    if self.trade_type == 'Close':
+    if self.trade_type.startswith('Close'):
       gain = (self.price - self.unit_cost) * self.shares
       percent_gain = (self.price - self.unit_cost) / self.unit_cost
       # color = 'green' if gain > 0 else 'red'
