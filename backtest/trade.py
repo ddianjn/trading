@@ -1,5 +1,6 @@
 import termcolor
 from colorama import Fore, Style
+from trading.backtest.position import Position
 
 class Trade:
   def __init__(self,
@@ -8,13 +9,15 @@ class Trade:
                price: float,
                shares: float,
                trade_type: str = "Long",
-               unit_cost: float = 0):
+               unit_cost: float = 0,
+               affected_position: Position|None = None):
     self.stock = stock
     self.date = date
     self.price = price
     self.shares = shares
     self.trade_type = trade_type
     self.unit_cost = unit_cost
+    self.affected_position = affected_position
 
   def print(self):
     if self.trade_type.startswith('Close'):
