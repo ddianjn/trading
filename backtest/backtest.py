@@ -2,13 +2,14 @@ import pandas as pd
 from typing import List, Dict
 from trading.data import data_fetching
 from trading.backtest.position import Position
+from trading.backtest.strategy import Strategy
 from trading.backtest.trade import Trade
 
 def backtest(stocks: List[str]|str,
              start:str = "2018-01-01",
              end:str = None,
              interval:str = "1d",
-             strategies: List = [],
+             strategies: List[Strategy] = [],
              initial_capital: float = 100000,
              print_trades: bool = False,
              print_summary: bool = False) -> (pd.DataFrame, List[Trade]):
