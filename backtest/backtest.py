@@ -24,19 +24,16 @@ def backtest(stocks: List[str]|str,
     transactions = []
     for i in range(2, len(data) - 2):
       for strategy in strategies:
-        trade, position = strategy(stock, data, i, cash, positions)
-        if trade is not None:
+        trades = strategy.trade(stock, data, i, cash, positions)
+        for trade in trades:
           transactions.append(trade)
           if print_trades:
             trade.print()
-          assert position is not None
+          position = trade.affected_position
           if position.is_closed():
-            assert position in positions
-            positions.remove(position)
             closed_positions.append(position)
             cash += position.close_price * position.shares
           else:
-            positions.append(position)
             cash -= position.open_price * position.shares
     end_price = data['Close'][len(data) - 1]
     end_date = data['Date'][len(data) - 1]
@@ -75,7 +72,7 @@ def summarize(stock: str,
 
   res = {"Stock": stock,
          "% Return": percent_return,
-         "Annualized Return":annualized_return}
+         "% Annualized Return":annualized_return}
   res.update(calculate_profit_trades(transactions, print_summary))
   res.update(calculate_profit_factor(closed_positions, print_summary))
   res.update(calculate_max_drawdown(initial_capital, transactions, print_summary))
