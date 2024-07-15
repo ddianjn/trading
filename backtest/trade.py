@@ -19,6 +19,9 @@ class Trade:
     self.unit_cost = unit_cost
     self.affected_position = affected_position
 
+  def is_close():
+    return self.trade_type.startswith("Close")
+
   def print(self):
     if self.trade_type.startswith('Close'):
       gain = (self.price - self.unit_cost) * self.shares
