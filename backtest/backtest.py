@@ -31,7 +31,7 @@ def backtest(stocks: List[str]|str,
           if print_trades:
             trade.print()
           position = trade.affected_position
-          if position.is_closed():
+          if trade.is_close()::
             closed_positions.append(position)
             cash += position.close_price * position.shares
           else:
