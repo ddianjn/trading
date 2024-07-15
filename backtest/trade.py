@@ -19,7 +19,7 @@ class Trade:
     self.unit_cost = unit_cost
     self.affected_position = affected_position
 
-  def is_close():
+  def is_close(self):
     return self.trade_type.startswith("Close")
 
   def print(self):
