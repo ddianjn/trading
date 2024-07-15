@@ -85,7 +85,7 @@ def calculate_profit_trades(transactions: List[Trade],
   trade_with_loss = 0
   # Print profit trades
   for trade in transactions:
-    if trade.trade_type == 'Close':
+    if trade.is_close():
       if trade.price > trade.unit_cost:
         trade_with_profit += 1
       else:
@@ -128,7 +128,7 @@ def calculate_max_drawdown(initial_capital: float,
   drawdown = 0
   drawdown_percent = 0.0
   for trade in transactions:
-    if trade.trade_type == 'Close':
+    if trade.is_close():
       current = trade.price * trade.shares
       if current > peak:
         peak = current
