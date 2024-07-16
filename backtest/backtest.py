@@ -12,6 +12,7 @@ def backtest(stocks: List[str]|str,
              strategies: List[Strategy] = [],
              initial_capital: float = 100000,
              print_trades: bool = False,
+             print_balance: bool = False,
              print_summary: bool = False) -> (pd.DataFrame, List[Trade]):
   if isinstance(stocks, str):
     stocks = [stocks]
@@ -36,7 +37,7 @@ def backtest(stocks: List[str]|str,
             cash += position.close_price * position.shares
           else:
             cash -= position.open_price * position.shares
-      if print_trades:
+      if print_balance:
         print(f"Cash on {data['Date'][i]}: {cash}")
     end_price = data['Close'][len(data) - 1]
     end_date = data['Date'][len(data) - 1]
