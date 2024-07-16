@@ -114,7 +114,10 @@ def calculate_profit_factor(closed_positions: List[Position],
       gross_profit += position.profit
     else:
       gross_loss += position.profit
-  profit_factor = gross_profit / -gross_loss
+  if gross_loss == 0:
+    profit_factor = float('inf')
+  else:
+    profit_factor = gross_profit / -gross_loss
   if print_summary:
     print(f"Gross Profit: {gross_profit: .2f}")
     print(f"Gross Loss: {gross_loss: .2f}")
