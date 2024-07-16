@@ -9,6 +9,12 @@ class Strategy:
   def maybe_close_position(self, stock, data, i, positions):
     return []
 
+  def maybe_adjust_stop_win(self, stock, data, i, positions):
+    return []
+
+  def maybe_adjust_stop_loss(self, stock, data, i, positions):
+    return []
+
   def trade(self, stock, data, i, cash, positions):
     if len(positions) == 0:
       transactions = self.maybe_open_position(stock, data, i, cash, positions)
@@ -34,6 +40,9 @@ class Strategy:
       transactions.append(close_trades)
     else:
       transactions.extend(close_trades)
+
+    self.maybe_adjust_stop_win(stock, data, i, positions)
+    self.maybe_adjust_stop_loss(stock, data, i, positions)
     return transactions
   
   def _long(self, stock, data, i, cash, positions, date, price,
