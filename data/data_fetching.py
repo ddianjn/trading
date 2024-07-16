@@ -6,8 +6,8 @@ def download_data(stock_ticker: str,
                   start: str = "2018-01-01",
                   end: str|None = None,
                   interval: str = "1d"):
-  if end is None:
-    end = date.today().strftime("%Y-%m-%d")
+  # if end is None:
+  #   end = date.today().strftime("%Y-%m-%d")
   # Load the data from Yahoo Finance
   # historical_data = yf.download(stock_ticker, start=start, end=end, interval=interval)
   stock = yf.Ticker(stock_ticker)
