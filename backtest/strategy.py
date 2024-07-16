@@ -41,8 +41,9 @@ class Strategy:
     else:
       transactions.extend(close_trades)
 
-    self.maybe_adjust_stop_win(stock, data, i, positions)
-    self.maybe_adjust_stop_loss(stock, data, i, positions)
+    if len(positions) > 0:
+      self.maybe_adjust_stop_win(stock, data, i, positions)
+      self.maybe_adjust_stop_loss(stock, data, i, positions)
     return transactions
   
   def _long(self, stock, data, i, cash, positions, date, price,
