@@ -61,3 +61,22 @@ def wma(data: pd.DataFrame,
   weights = np.array([(period - i) * period for i in range(period)])
   wma = data[source].rolling(window=period).apply(lambda x: (x * weights[::-1]).sum() / weights.sum(), raw=True)
   return pd.DataFrame({f'WMA{period}': wma})
+
+def atr(data: pd.DataFrame, period: int):
+  """Calculates the Average True Range (ATR) for a given DataFrame.
+
+  Args:
+    data: A pandas DataFrame containing the True Range ('tr') column.
+    period: The number of periods for the ATR calculation.
+
+  Returns:
+    A pandas Series containing the ATR values.
+  """
+
+  high_low = data['High'] - data['Low']
+  high_prev_close = abs(data['High'] - data['Close'].shift(1))
+  low_prev_close = abs(data['Low'] - data['Close'].shift(1))
+  tr = high_low.where(high_low > high_prev_close, high_prev_close).where(lambda x: x > low_prev_close, low_prev_close)
+
+  atr = tr.rolling(window=period).mean()
+  return pd.DataFrame({'tr': tr, f'atr{period}': atr})
