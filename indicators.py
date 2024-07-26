@@ -45,7 +45,9 @@ def macd(data: pd.DataFrame,
 
   return pd.DataFrame({'MACD': macd, 'Signal': signal, 'Histogram': histogram})
 
-def wma(data, window, source: str = "Close"):
+def wma(data: pd.DataFrame,
+        window: int,
+        source: str = "Close"):
   """Calculates the Weighted Moving Average (WMA) of a pandas Series.
 
   Args:
