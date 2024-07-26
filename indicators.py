@@ -46,18 +46,18 @@ def macd(data: pd.DataFrame,
   return pd.DataFrame({'MACD': macd, 'Signal': signal, 'Histogram': histogram})
 
 def wma(data: pd.DataFrame,
-        window: int,
+        period: int,
         source: str = "Close"):
   """Calculates the Weighted Moving Average (WMA) of a pandas Series.
 
   Args:
     data: The pandas Series containing the data.
-    window: The length of the WMA window.
+    period: The length of the WMA window.
     source: The column name of the data in the pandas Series.
 
   Returns:
     A pandas Series containing the WMA values.
   """
-  weights = np.array([(window - i) * window for i in range(window)])
-  wma = data[source].rolling(window=window).apply(lambda x: (x * weights[::-1]).sum() / weights.sum(), raw=True)
-  return wma
+  weights = np.array([(period - i) * period for i in range(period)])
+  wma = data[source].rolling(window=period).apply(lambda x: (x * weights[::-1]).sum() / weights.sum(), raw=True)
+  return pd.DataFrame({f'WMA{period}': wma})
