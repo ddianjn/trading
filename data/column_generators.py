@@ -131,6 +131,40 @@ def ema_diff(short_period: int, long_period: int):
     return data.dropna()
   return ema_diff_generator
 
+def wma(period: int):
+  def wma_generator(data: pd.DataFrame):
+    data = _add_new_columns(data, indicators.wma(data, period))
+    return data.dropna()
+  return wma_generator
+
+def wma_diff(short_period: int, long_period: int):
+  if short_period > long_period:
+    temp = short_period
+    short_period = long_period
+    long_period = temp
+  def wma_diff_generator(data: pd.DataFrame):
+    new_columns = []
+
+    if f"WMA{short_period}" in data:
+      short_wma = data[f"WMA{short_period}"]
+    else:
+      short_wma = indicators.wma(data, short_period)
+      new_columns.append(short_wma)
+      short_wma = short_wma[f"WMA{short_period}"]
+
+    if f"WMA{long_period}" in data:
+      long_wma = data[f"WMA{long_period}"]
+    else:
+      long_wma = indicators.wma(data, long_period)
+      new_columns.append(long_wma)
+      long_wma = long_wma[f"WMA{long_period}"]
+
+    diff = pd.DataFrame({f"WMA diff:{short_period}-{long_period}": short_wma - long_wma})
+    new_columns.append(diff)
+    data = _add_new_columns(data, new_columns)
+    return data.dropna()
+  return wma_diff_generator
+
 def macd(short_period: int = 12,
          long_period: int = 26,
          signal_period: int = 9):
