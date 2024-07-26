@@ -181,6 +181,13 @@ def macd(short_period: int = 12,
     return data.dropna()
   return macd_generator
 
+def atr(period: int):
+  def atr_generator(data: pd.DataFrame):
+    atr = indicators.atr(data, period)
+    data = _add_new_columns(data, atr)
+    return data.dropna()
+  return atr_generator
+
 def _add_new_columns(data: pd.DataFrame, new_columns: pd.DataFrame|Dict[str, pd.Series]|List[pd.DataFrame]):
   if isinstance(new_columns, pd.DataFrame):
     data = pd.concat([data, new_columns], axis=1)
