@@ -200,6 +200,17 @@ def ravifxf(short_period: int = 4,
     return data.dropna()
   return ravifxf_generator
 
+def andeanOscillator(data,
+                     period: int = 50,
+                     signal_period: int = 9):
+  def andeanOscillator_generator(data: pd.DataFrame):
+    res = indicators.andeanOscillator(data,
+                                      period = period,
+                                      signal_period = signal_period)
+    data = _add_new_columns(data, res)
+    return data.dropna()
+  return andeanOscillator_generator
+
 def _add_new_columns(data: pd.DataFrame, new_columns: pd.DataFrame|Dict[str, pd.Series]|List[pd.DataFrame]):
   if isinstance(new_columns, pd.DataFrame):
     data = pd.concat([data, new_columns], axis=1)
