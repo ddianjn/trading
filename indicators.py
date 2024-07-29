@@ -1,23 +1,28 @@
 import numpy as np
 import pandas as pd
 
-def sma(data: pd.DataFrame, period: int):
-  ma = data['Close'].rolling(window=period).mean()
+def sma(data: pd.DataFrame,
+        period: int,
+        source: str = "Close"):
+  ma = data[source].rolling(window=period).mean()
   return pd.DataFrame({f'MA{period}': ma})
 
-def ema(data: pd.DataFrame, period: int):
+def ema(data: pd.DataFrame,
+        period: int,
+        source: str = "Close"):
   """Calculates the Exponential Moving Average (EMA) for a given data series.
 
   Args:
     data: A pandas Series containing the data for which to calculate EMA.
     period: The number of periods for the EMA calculation.
+    source: The column name of the data in the pandas Series.
 
   Returns:
     A pandas Series containing the calculated EMA.
   """
 
   alpha = 2 / (period + 1)
-  ema = data['Close'].ewm(alpha=alpha, adjust=False).mean()
+  ema = data[source].ewm(alpha=alpha, adjust=False).mean()
   return pd.DataFrame({f'EMA{period}': ema})
 
 def macd(data: pd.DataFrame,
