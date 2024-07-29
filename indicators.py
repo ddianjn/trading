@@ -135,10 +135,10 @@ def andeanOscillator(data,
 
   close = data['Close']
   open = data['Open']
-  up1 = max(close, open)
-  up2 = max(close * close, open * open)
-  dn1 = min(close, open)
-  dn2 = min(close * close, open * open)
+  up1 = np.maximum(close, open)
+  up2 = np.maximum(close * close, open * open)
+  dn1 = np.minimum(close, open)
+  dn2 = np.minimum(close * close, open * open)
   for i in range(1, len(up1)):
     up1[i] = max(up1[i], up1[i - 1] - (up1[i - 1] - close[i]) * alpha)
     up2[i] = max(up2[i], up2[i - 1] - (up2[i - 1] - close[i] * close[i]) * alpha)
@@ -148,6 +148,6 @@ def andeanOscillator(data,
   bull = np.sqrt(dn2 - dn1 * dn1)
   bear = np.sqrt(up2 - up1 * up1)
 
-  # Fake "Close" column.
-  signal = ema(pd.DataFrame({"Close": max(bull, bear)}), signal_period)
-  return pd.DataFrame({"Bull": bull, "Bear": bear, "Signal": signal})
+  # Use a fake "Close" column to calculate ema.
+  signal = ema(pd.DataFrame({"Close": np.maximum(bull, bear)}), signal_period)
+  return pd.DataFrame({"Bull": bull, "Bear": bear, "Signal": signal[f'EMA{signal_period}']})
