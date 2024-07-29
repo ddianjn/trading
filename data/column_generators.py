@@ -200,8 +200,7 @@ def ravifxf(short_period: int = 4,
     return data.dropna()
   return ravifxf_generator
 
-def andeanOscillator(data,
-                     period: int = 50,
+def andeanOscillator(period: int = 50,
                      signal_period: int = 9):
   def andeanOscillator_generator(data: pd.DataFrame):
     res = indicators.andeanOscillator(data,
