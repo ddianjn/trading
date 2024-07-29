@@ -80,3 +80,32 @@ def atr(data: pd.DataFrame, period: int):
 
   atr = tr.rolling(window=period).mean()
   return pd.DataFrame({'tr': tr, f'atr{period}': atr})
+
+def ravifxf(data,
+            source: str = "Close",
+            short_period: int = 4,
+            long_period: int = 49):
+  """Calculates RAVI FX Fisher.
+
+  RAVI FX Fisher is a special implementation of RAVI using WMA moving averages and ATR and then normalized
+  like Fisher Transform. If the histogram falls between the white lines, the market is too choppy to trade.
+  What is RAVI?
+  The Range Action Verification Index (RAVI) indicator shows the percentage difference between current prices
+  and past prices to identify market trends. It is calculated based on moving averages of different lengths.
+
+  Args:
+    data: A pandas DataFrame containing the True Range ('tr') column.
+    short_period: The number of periods for the short-term WMA.
+    long_period: The number of periods for the long-term WMA.
+
+  Returns:
+    A pandas Series containing the ATR values.
+  """
+  fast_wma = indicators.wma(data, short_period, source)[f"WMA{short_period}"]
+  slow_wma = indicators.wma(data, long_period, source)[f"WMA{long_period}"]
+  fast_atr = indicators.atr(data, short_period)[f"atr{short_period}"]
+  slow_atr = indicators.atr(data, long_period)[f"atr{long_period}"]
+  maval = (fast_wma - slow_wma) * fast_atr / slow_wma / slow_atr * 100
+  fish = (np.exp(2 * maval) - 1) / (np.exp(2 * maval) + 1)
+  return pd.DataFrame({f'maval_{source}_{short_period}_{long_period}': maval,
+                       f'fish_{source}_{short_period}_{long_period}': fish})
