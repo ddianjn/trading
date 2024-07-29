@@ -188,6 +188,18 @@ def atr(period: int):
     return data.dropna()
   return atr_generator
 
+def ravifxf(short_period: int = 4,
+            long_period: int = 49,
+            source: str = "Close"):
+  def ravifxf_generator(data: pd.DataFrame):
+    fish = indicators.ravifxf(data,
+                             short_period = short_period,
+                             long_period = long_period,
+                             source = source)
+    data = _add_new_columns(data, fish)
+    return data.dropna()
+  return ravifxf_generator
+
 def _add_new_columns(data: pd.DataFrame, new_columns: pd.DataFrame|Dict[str, pd.Series]|List[pd.DataFrame]):
   if isinstance(new_columns, pd.DataFrame):
     data = pd.concat([data, new_columns], axis=1)
