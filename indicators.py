@@ -99,18 +99,55 @@ def ravifxf(data,
   and past prices to identify market trends. It is calculated based on moving averages of different lengths.
 
   Args:
-    data: A pandas DataFrame containing the True Range ('tr') column.
+    data: A pandas DataFrame.
     short_period: The number of periods for the short-term WMA.
     long_period: The number of periods for the long-term WMA.
 
   Returns:
     A pandas Series containing the ATR values.
   """
-  fast_wma = indicators.wma(data, short_period, source)[f"WMA{short_period}"]
-  slow_wma = indicators.wma(data, long_period, source)[f"WMA{long_period}"]
-  fast_atr = indicators.atr(data, short_period)[f"atr{short_period}"]
-  slow_atr = indicators.atr(data, long_period)[f"atr{long_period}"]
+  fast_wma = wma(data, short_period, source)[f"WMA{short_period}"]
+  slow_wma = wma(data, long_period, source)[f"WMA{long_period}"]
+  fast_atr = atr(data, short_period)[f"atr{short_period}"]
+  slow_atr = atr(data, long_period)[f"atr{long_period}"]
   maval = (fast_wma - slow_wma) * fast_atr / slow_wma / slow_atr * 100
   fish = (np.exp(2 * maval) - 1) / (np.exp(2 * maval) + 1)
   return pd.DataFrame({f'maval_{source}_{short_period}_{long_period}': maval,
                        f'fish_{source}_{short_period}_{long_period}': fish})
+
+def andeanOscillator(data,
+                     period: int = 50,
+                     signal_period: int = 9):
+  """Calculates Andean Oscillator.
+
+  The proposed indicator aims to measure the degree of variations of individual up-trends and down-trends in
+  the price, thus allowing to highlight the direction and amplitude of a current trend.
+
+  Args:
+    data: A pandas DataFrame.
+    period: Determines the significance of the trends degree of variations measured by the indicator.
+    signal_period: Moving average period of the signal line.
+
+  Returns:
+    A pandas Series containing the ATR values.
+  """
+  alpha = 2/(period+1)
+
+  close = data['Close']
+  open = data['Open']
+  up1 = max(close, open)
+  up2 = max(close * close, open * open)
+  dn1 = min(close, open)
+  dn2 = min(close * close, open * open)
+  for i in range(1, len(up1)):
+    up1[i] = max(up1[i], up1[i - 1] - (up1[i - 1] - close[i]) * alpha)
+    up2[i] = max(up2[i], up2[i - 1] - (up2[i - 1] - close[i] * close[i]) * alpha)
+    dn1[i] = min(dn1[i], dn1[i - 1] + (close[i] - dn1[i - 1]) * alpha)
+    dn2[i] = min(dn2[i], dn2[i - 1] + (close[i] * close[i] - dn2[i - 1]) * alpha)
+
+  bull = np.sqrt(dn2 - dn1 * dn1)
+  bear = np.sqrt(up2 - up1 * up1)
+
+  # Fake "Close" column.
+  signal = ema(pd.DataFrame({"Close": max(bull, bear)}), signal_period)
+  return pd.DataFrame({"Bull": bull, "Bear": bear, "Signal": signal})
