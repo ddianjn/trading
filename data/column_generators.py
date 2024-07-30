@@ -4,7 +4,7 @@ from typing import Dict, List
 
 def generate_return(data: pd.DataFrame) -> None:
   return_col = data["Close"].pct_change() * 100
-  data = _add_new_columns(data, {"% Return": return_col})
+  data = add_new_columns(data, {"% Return": return_col})
   return data
 
 def lag_features(lag: int = 1):
@@ -14,7 +14,7 @@ def lag_features(lag: int = 1):
     for i in range(1, lag + 1):
       for column in columns:
         new_columns[f'lag_{i}_{column}'] = data[column].shift(i)
-    data = _add_new_columns(data, new_columns)
+    data = add_new_columns(data, new_columns)
     return data.dropna()
   return lag_feature_generator
 
@@ -29,7 +29,7 @@ def return_category(period: int, return_target: float):
 
     category = (max_return >= return_target).astype(int)
     new_columns[f"return_category_{period}_{return_target}"] = category
-    data = _add_new_columns(data, new_columns)
+    data = add_new_columns(data, new_columns)
     return data.dropna()
   return return_category_generator
 
@@ -44,7 +44,7 @@ def loss_category(period: int, loss_target: float):
 
     category = (max_loss <= loss_target).astype(int)
     new_columns[f"loss_category_{period}_{loss_target}"] = category
-    data = _add_new_columns(data, new_columns)
+    data = add_new_columns(data, new_columns)
     return data.dropna()
   return loss_category_generator
 
@@ -59,13 +59,13 @@ def return_loss_category(period: int, return_target: float, loss_target: float):
 
     new_values = (data[f"return_category_{period}_{return_target}"] > data[f"loss_category_{period}_{loss_target}"]).astype(int)
     new_columns = {f"return_loss_category_{period}_{return_target}_{loss_target}": new_values}    
-    data = _add_new_columns(data, new_columns)
+    data = add_new_columns(data, new_columns)
     return data.dropna()
   return return_loss_category_generator
 
 def sma(period: int):
   def sma_generator(data: pd.DataFrame):
-    data = _add_new_columns(data, indicators.sma(data, period))
+    data = add_new_columns(data, indicators.sma(data, period))
     return data.dropna()
   return sma_generator
 
@@ -93,13 +93,13 @@ def sma_diff(short_period: int, long_period: int):
 
     diff = pd.DataFrame({f"MA diff:{short_period}-{long_period}": short_sma - long_sma})
     new_columns.append(diff)
-    data = _add_new_columns(data, new_columns)
+    data = add_new_columns(data, new_columns)
     return data.dropna()
   return sma_diff_generator
 
 def ema(period: int):
   def ema_generator(data: pd.DataFrame):
-    data = _add_new_columns(data, indicators.ema(data, period))
+    data = add_new_columns(data, indicators.ema(data, period))
     return data.dropna()
   return ema_generator
 
@@ -127,13 +127,13 @@ def ema_diff(short_period: int, long_period: int):
 
     diff = pd.DataFrame({f"EMA diff:{short_period}-{long_period}": short_ema - long_ema})
     new_columns.append(diff)
-    data = _add_new_columns(data, new_columns)
+    data = add_new_columns(data, new_columns)
     return data.dropna()
   return ema_diff_generator
 
 def wma(period: int):
   def wma_generator(data: pd.DataFrame):
-    data = _add_new_columns(data, indicators.wma(data, period))
+    data = add_new_columns(data, indicators.wma(data, period))
     return data.dropna()
   return wma_generator
 
@@ -161,7 +161,7 @@ def wma_diff(short_period: int, long_period: int):
 
     diff = pd.DataFrame({f"WMA diff:{short_period}-{long_period}": short_wma - long_wma})
     new_columns.append(diff)
-    data = _add_new_columns(data, new_columns)
+    data = add_new_columns(data, new_columns)
     return data.dropna()
   return wma_diff_generator
 
@@ -177,14 +177,14 @@ def macd(short_period: int = 12,
                            short_period = short_period,
                            long_period = long_period,
                            signal_period = signal_period)
-    data = _add_new_columns(data, macd)
+    data = add_new_columns(data, macd)
     return data.dropna()
   return macd_generator
 
 def atr(period: int):
   def atr_generator(data: pd.DataFrame):
     atr = indicators.atr(data, period)
-    data = _add_new_columns(data, atr)
+    data = add_new_columns(data, atr)
     return data.dropna()
   return atr_generator
 
@@ -196,7 +196,7 @@ def ravifxf(short_period: int = 4,
                              short_period = short_period,
                              long_period = long_period,
                              source = source)
-    data = _add_new_columns(data, fish)
+    data = add_new_columns(data, fish)
     return data.dropna()
   return ravifxf_generator
 
@@ -206,11 +206,11 @@ def andeanOscillator(period: int = 50,
     res = indicators.andeanOscillator(data,
                                       period = period,
                                       signal_period = signal_period)
-    data = _add_new_columns(data, res)
+    data = add_new_columns(data, res)
     return data.dropna()
   return andeanOscillator_generator
 
-def _add_new_columns(data: pd.DataFrame, new_columns: pd.DataFrame|Dict[str, pd.Series]|List[pd.DataFrame]):
+def add_new_columns(data: pd.DataFrame, new_columns: pd.DataFrame|Dict[str, pd.Series]|List[pd.DataFrame]):
   if isinstance(new_columns, pd.DataFrame):
     data = pd.concat([data, new_columns], axis=1)
   elif isinstance(new_columns, Dict):
