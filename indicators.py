@@ -67,6 +67,26 @@ def wma(data: pd.DataFrame,
   wma = data[source].rolling(window=period).apply(lambda x: (x * weights[::-1]).sum() / weights.sum(), raw=True)
   return pd.DataFrame({f'WMA{period}': wma})
 
+def rma(data: pd.DataFrame,
+        period: int,
+        source: str = "Close"):
+  """Calculates the RMA of a pandas Series.
+
+  Moving average used in RSI. It is the exponentially weighted moving average
+  with alpha = 1 / length.
+
+  Args:
+    data: The pandas Series containing the data.
+    period: The length of the RMA window.
+    source: The column name of the data in the pandas Series.
+
+  Returns:
+    A pandas Series containing the RMA values.
+  """
+  alpha = 1 / period
+  rma = data[source].ewm(alpha=alpha, adjust=False).mean()
+  return pd.DataFrame({f'RMA{period}': rma})
+
 def atr(data: pd.DataFrame, period: int):
   """Calculates the Average True Range (ATR) for a given DataFrame.
 
@@ -83,8 +103,8 @@ def atr(data: pd.DataFrame, period: int):
   low_prev_close = abs(data['Low'] - data['Close'].shift(1))
   tr = high_low.where(high_low > high_prev_close, high_prev_close).where(lambda x: x > low_prev_close, low_prev_close)
 
-  atr = tr.rolling(window=period).mean()
-  return pd.DataFrame({'tr': tr, f'atr{period}': atr})
+  atr = rma(pd.DataFrame({'tr': tr}), period, source = 'tr')
+  return pd.DataFrame({'tr': tr, f'atr{period}': atr[f'RMA{period}']})
 
 def ravifxf(data,
             source: str = "Close",
