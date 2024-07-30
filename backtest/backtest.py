@@ -44,7 +44,7 @@ def backtest(stocks: List[str]|str,
             cash += position.close_price * position.shares
           else:
             cash -= position.open_price * position.shares
-      net_values.append(calculate_net_value(stock, data, cash, positions))
+      net_values.append(calculate_net_value(stock, data, i, cash, positions))
       if has_trade and print_balance:
         print(f"{data['Date'][i]}: Cash = {cash}, Net value = {net_values[-1]['Close']}")
     end_price = data['Close'][len(data) - 1]
@@ -56,7 +56,7 @@ def backtest(stocks: List[str]|str,
       closed_positions.append(position)
       positions.remove(position)
       cash += position.shares * end_price
-      net_values.append(calculate_net_value(stock, data, cash, positions))
+      net_values.append(calculate_net_value(stock, data, -1, cash, positions))
       if print_trades:
         trade.print()
     res.append(summarize(stock, data, initial_capital, cash, transactions, closed_positions, net_values, print_summary, plot_net_values))
