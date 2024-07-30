@@ -15,6 +15,19 @@ class Strategy:
   def maybe_adjust_stop_loss(self, stock, data, i, positions):
     return []
 
+  def generate_indicator_columns(self, data):
+    return data
+
+  def add_new_columns(data: pd.DataFrame, new_columns: pd.DataFrame|Dict[str, pd.Series]|List[pd.DataFrame]):
+    if isinstance(new_columns, pd.DataFrame):
+      data = pd.concat([data, new_columns], axis=1)
+    elif isinstance(new_columns, Dict):
+      data = pd.concat([data, pd.DataFrame(new_columns)], axis=1)
+    elif isinstance(new_columns, List):
+      data = pd.concat([data] + new_columns, axis=1)
+  
+    return data
+
   def trade(self, stock, data, i, cash, positions):
     if len(positions) == 0:
       transactions = self.maybe_open_position(stock, data, i, cash, positions)
