@@ -59,3 +59,11 @@ def plot_sequence_prediction_comparison(actual: pd.DataFrame,
     ax.legend()
     ax.grid(True)
   plt.show()
+ 
+def plot_lines(title: str, values: pd.DataFrame):
+  fig = plt.figure(figsize=(12, 8))
+  for column in values.columns:
+    fig.plot(values.index, values[column], label=column)
+  fig.legend()
+  fig.grid(True)
+  plt.show()
