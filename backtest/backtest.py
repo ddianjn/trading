@@ -160,7 +160,7 @@ def calculate_max_drawdown(net_values: List[Dict[str, float]],
   drawdown_percent = 0.0
   for current in net_values:
     if current['High'] > peak:
-      peak = current
+      peak = current['High']
     drawdown = max(drawdown, peak - current['Low'])
     drawdown_percent = max(drawdown_percent, (peak - current['Low']) / peak)
   if print_summary:
