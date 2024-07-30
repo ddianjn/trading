@@ -155,7 +155,6 @@ def calculate_profit_factor(closed_positions: List[Position],
 
 def calculate_max_drawdown(net_values: List[Dict[str, float]],
                            print_summary: bool) -> Dict[str, float]:
-  print(net_values)
   peak = net_values[0]['High']
   drawdown = 0
   drawdown_percent = 0.0
@@ -172,4 +171,6 @@ def calculate_max_drawdown(net_values: List[Dict[str, float]],
 def plot_net_values_chart(stock: str,
                           data: pd.DataFrame,
                           net_values: List[Dict[str, float]]):
-  plotting.plot_lines(stock, net_values)
+  net_values_df = pd.DataFrame(net_values)
+  print(net_values_df)
+  plotting.plot_lines(stock, net_values_df)
