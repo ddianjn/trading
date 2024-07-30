@@ -155,7 +155,7 @@ def calculate_profit_factor(closed_positions: List[Position],
 
 def calculate_max_drawdown(net_values: List[Dict[str, float]],
                            print_summary: bool) -> Dict[str, float]:
-  peak = net_values[0]
+  peak = net_values[0]['High']
   drawdown = 0
   drawdown_percent = 0.0
   for current in net_values:
