@@ -64,6 +64,7 @@ def backtest(stocks: List[str]|str,
 
 def calculate_net_value(stock: str,
                         data: pd.DataFrame,
+                        index: int,
                         cash: int,
                         positions: List[Position]):
   high_net_value = cash
@@ -71,9 +72,9 @@ def calculate_net_value(stock: str,
   close_net_value = cash
   for position in positions:
     if position.stock == stock:
-      high_net_value += data['High'] * position.shares
-      low_net_value += data['Low'] * position.shares
-      close_net_value += data['Close'] * position.shares
+      high_net_value += data['High'][index] * position.shares
+      low_net_value += data['Low'][index] * position.shares
+      close_net_value += data['Close'][index] * position.shares
   return {"High": high_net_value, "Low": low_net_value, "Close": close_net_value}
 
 def summarize(stock: str,
