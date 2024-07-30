@@ -24,6 +24,8 @@ def backtest(stocks: List[str]|str,
     positions = []
     closed_positions = []
     transactions = []
+    for strategy in strategies:
+      data = strategy.generate_indicator_columns(data)
     for i in range(len(data)):
       for strategy in strategies:
         trades = strategy.trade(stock, data, i, cash, positions)
