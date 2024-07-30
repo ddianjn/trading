@@ -15,10 +15,12 @@ def backtest(stocks: List[str]|str,
              print_trades: bool = False,
              print_balance: bool = False,
              print_summary: bool = False,
-             plot_net_values: bool = False) -> (pd.DataFrame, List[Trade]):
+             plot_net_values: bool = False) -> (pd.DataFrame, Dict[str, List[Trade]], Dict[str, Dict[str, float]]):
   if isinstance(stocks, str):
     stocks = [stocks]
   res = []
+  transactions_map = {}
+  net_values_map = {}
   for stock in stocks:
     data = data_fetching.download_data(stock, start, end, interval = interval)
     data.reset_index(inplace=True)
@@ -60,7 +62,9 @@ def backtest(stocks: List[str]|str,
       if print_trades:
         trade.print()
     res.append(summarize(stock, data, initial_capital, cash, transactions, closed_positions, net_values, print_summary, plot_net_values))
-  return pd.DataFrame(res), transactions
+    transactions_map[stock] = transactions
+    net_values_map[stock] = net_values
+  return pd.DataFrame(res), transactions_map, net_values_map
 
 def calculate_net_value(stock: str,
                         data: pd.DataFrame,
