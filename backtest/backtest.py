@@ -173,5 +173,5 @@ def plot_net_values_chart(stock: str,
                           net_values: List[Dict[str, float]]):
   net_values_df = pd.DataFrame(net_values)
   net_values_df['Date'] = data['Date']
-  net_values_df.set_index('Date')
+  net_values_df.set_index('Date', inplace = True)
   plotting.plot_lines(stock, net_values_df)
