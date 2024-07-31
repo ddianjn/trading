@@ -107,11 +107,11 @@ def summarize(stock: str,
   res = {"Stock": stock,
          "% Return": percent_return,
          "% Annualized Return":annualized_return}
-  res.update(calculate_profit_trades(transactions, print_summary))
-  res.update(calculate_profit_factor(closed_positions, print_summary))
-  res.update(calculate_max_drawdown(net_values, print_summary))
-  if plot_net_values:
-    plot_net_values_chart(stock, data, net_values)
+  # res.update(calculate_profit_trades(transactions, print_summary))
+  # res.update(calculate_profit_factor(closed_positions, print_summary))
+  # res.update(calculate_max_drawdown(net_values, print_summary))
+  # if plot_net_values:
+  #   plot_net_values_chart(stock, data, net_values)
   return res
 
 def calculate_profit_trades(transactions: List[Trade],
