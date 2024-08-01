@@ -12,7 +12,6 @@ def download_data(stock_ticker: str,
   # historical_data = yf.download(stock_ticker, start=start, end=end, interval=interval)
   stock = yf.Ticker(stock_ticker)
   historical_data = stock.history(start=start, end=end, interval=interval)
-  print()
 
   # historical_data.reset_index(inplace=True)
   # Parse dates and convert them to matplotlib's date format
