@@ -1,6 +1,6 @@
 import termcolor
 from colorama import Fore, Style
-from trading.backtest.position import Position
+from trading.position import Position
 
 class Trade:
   def __init__(self,
