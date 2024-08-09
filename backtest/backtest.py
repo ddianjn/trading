@@ -1,9 +1,9 @@
 import pandas as pd
 from typing import List, Dict
 from trading.data import data_fetching
-from trading.backtest.position import Position
-from trading.backtest.strategy import Strategy
-from trading.backtest.trade import Trade
+from trading.strategy.strategy import Strategy
+from trading.position import Position
+from trading.trade import Trade
 from trading import plotting
 
 def backtest(stocks: List[str]|str,
