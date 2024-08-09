@@ -1,5 +1,5 @@
-from trading.backtest.position import Position
-from trading.backtest.trade import Trade
+from trading.position import Position
+from trading.trade import Trade
 from trading import indicators
 
 class Strategy:
